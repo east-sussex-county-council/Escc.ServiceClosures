@@ -107,9 +107,9 @@
   <ItemGroup>
     <Content Include=".gitignore" />
     <Content Include="ClosuresRss.xslt" />
+    <Content Include="EsccWebTeam.ServiceClosures.csproj.xslt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="app.example.config" />
     <None Include="LICENSE.md" />
     <None Include="Properties\Settings.settings">
