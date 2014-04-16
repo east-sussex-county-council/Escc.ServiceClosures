@@ -91,15 +91,15 @@
     <Compile Include="XPathClosureData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\VS Projects\_Standards\EsccWebTeam.Gdsc\EsccWebTeam.Gdsc.csproj">
+    <ProjectReference Include="..\Escc.Gdsc\EsccWebTeam.Gdsc.csproj">
       <Project>{a0024354-dd16-43e1-8574-176f8ba4f1ca}</Project>
       <Name>EsccWebTeam.Gdsc</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\VS Projects\_Libraries for re-use\EsccWebTeam.FormControls\EsccWebTeam.FormControls.csproj">
+    <ProjectReference Include="..\Escc.FormControls\EsccWebTeam.FormControls.csproj">
       <Project>{E6D5883F-99CE-4BF5-974A-66C542C43CFB}</Project>
       <Name>EsccWebTeam.FormControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\VS Projects\_Libraries for re-use\EsccWebTeam.HouseStyle\EsccWebTeam.HouseStyle.csproj">
+    <ProjectReference Include="..\Escc.HouseStyle\EsccWebTeam.HouseStyle.csproj">
       <Project>{1C429378-DBF2-4AF7-88AC-C059AA163682}</Project>
       <Name>EsccWebTeam.HouseStyle</Name>
     </ProjectReference>
@@ -107,7 +107,6 @@
   <ItemGroup>
     <Content Include=".gitignore" />
     <Content Include="ClosuresRss.xslt" />
-    <Content Include="Sandcastle.shfbproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -121,7 +120,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if "$(ConfigurationName)"=="Release" ( if exist "C:\Program Files\EsccWebTeam.SandcastleBuilder\EsccWebTeam.SandcastleBuilder.exe" "C:\Program Files\EsccWebTeam.SandcastleBuilder\EsccWebTeam.SandcastleBuilder.exe" "$(ProjectName)" "$(ProjectDir)Sandcastle.shfbproj" )</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
