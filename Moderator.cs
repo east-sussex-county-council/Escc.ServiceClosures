@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Net.Mail;
-using EsccWebTeam.Gdsc;
+using Escc.AddressAndPersonalDetails;
 
 namespace EsccWebTeam.ServiceClosures
 {
