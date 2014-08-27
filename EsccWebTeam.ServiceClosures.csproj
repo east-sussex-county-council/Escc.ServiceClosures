@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EsccWebTeam.ServiceClosures</RootNamespace>
     <AssemblyName>EsccWebTeam.ServiceClosures</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>S:\_Strong names\esccdev.snk</AssemblyOriginatorKeyFile>
@@ -28,6 +28,7 @@
     <UpgradeBackupLocation />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Solution files\eastsussex.gov.uk solutions\EsccWebTeam.Website.Solution\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -101,7 +102,7 @@
       <Name>EsccWebTeam.FormControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\Escc.HouseStyle\EsccWebTeam.HouseStyle.csproj">
-      <Project>{1C429378-DBF2-4AF7-88AC-C059AA163682}</Project>
+      <Project>{1c429378-dbf2-4af7-88ac-c059aa163682}</Project>
       <Name>EsccWebTeam.HouseStyle</Name>
     </ProjectReference>
   </ItemGroup>
