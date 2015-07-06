@@ -109,7 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClosuresRss.xslt" />
-    <Content Include="EsccWebTeam.ServiceClosures.csproj.xslt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.example.config" />
