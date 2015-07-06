@@ -14,14 +14,19 @@
     <!-- Links to XHTML version of closure info, and the current feed-->
     <xsl:param name="XhtmlVersionUrl" />
     <xsl:param name="CurrentUrl" />
+  
+    <!-- Require URLs for formatting the RSS feed to be supplied as parameters -->
+    <xsl:param name="HtmlXsltUrl" />
+    <xsl:param name="CssUrl" />
+    <xsl:param name="ImageUrl" />
     
     <!-- Optionally limit feed to a single service rather than all services of a given type -->
     <xsl:param name="ServiceCode" />
 
     <!-- Transform begins here, by writing out the header of the RSS feed. Assumes feed will be hosted on www.eastsussex.gov.uk -->
     <xsl:template match="/">
-        <xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet  type="text/xsl" href="http://www.eastsussex.gov.uk/masterpages/rss/display-as-html.xslt" ?&gt;
-        &lt;?xml-stylesheet  type="text/css" href="http://www.eastsussex.gov.uk/css/rssfeed.cssx" ?&gt;</xsl:text>
+        <xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet  type="text/xsl" href="</xsl:text><xsl:value-of select="$HtmlXsltUrl"/><xsl:text disable-output-escaping="yes">" ?&gt;
+        &lt;?xml-stylesheet  type="text/css" href="</xsl:text><xsl:value-of select="$CssUrl"/><xsl:text disable-output-escaping="yes">" ?&gt;</xsl:text>
         <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
             <channel>
                 <link>
@@ -41,7 +46,7 @@
                 <generator>East Sussex County Council at www.eastsussex.gov.uk</generator>
                 <image>
                     <title>East Sussex County Council logo</title>
-                    <url>http://www.eastsussex.gov.uk/rss/escc-logo.gif</url>
+                    <url><xsl:value-of select="$ImageUrl"/></url>
                     <width>90</width>
                     <height>65</height>
                     <link>
