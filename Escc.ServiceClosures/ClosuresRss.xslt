@@ -48,7 +48,6 @@
                         <xsl:value-of select="$XhtmlVersionUrl"/>
                     </link>
                 </image>
-                <rating>(pics-1.1 "http://www.icra.org/ratingsv02.html" comment "ICRAonline EN v2.0" l gen true for "http://www.eastsussex.gov.uk/" r (nz 1 vz 1 lz 1 oz 1 cz 1) "http://www.rsac.org/ratingsv01.html" l gen true for "http://www.eastsussex.gov.uk/" r (n 0 s 0 v 0 l 0))</rating>
 
                 <!-- Add the URL of the current feed -->
                 <xsl:if test="$CurrentUrl != ''">
