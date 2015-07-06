@@ -5,7 +5,7 @@ using System.Web.Caching;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Microsoft.ApplicationBlocks.ExceptionManagement;
+using Exceptionless;
 
 namespace Escc.ServiceClosures
 {
@@ -111,7 +111,7 @@ namespace Escc.ServiceClosures
                 {
                     // Publish the exception so that we know about it, but ensure the page
                     // continues to load uninterrupted
-                    ExceptionManager.Publish(ex);
+                    ex.ToExceptionless().Submit();
                     this.Visible = false;
                 }
             }

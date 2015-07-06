@@ -60,9 +60,11 @@
     <Reference Include="EsccWebTeam.FormControls">
       <HintPath>S:\_Reference DLLs\EsccWebTeam pre-NuGet\EsccWebTeam.FormControls - release\EsccWebTeam.FormControls.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ApplicationBlocks.ExceptionManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=06fad7304560ae6f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>S:\_Reference DLLs\Microsoft Exception Management Application Block\Release strong-named .NET 2\Microsoft.ApplicationBlocks.ExceptionManagement.dll</HintPath>
+    <Reference Include="Exceptionless">
+      <HintPath>..\packages\Exceptionless.1.5.2121\lib\net35\Exceptionless.dll</HintPath>
+    </Reference>
+    <Reference Include="Exceptionless.Models">
+      <HintPath>..\packages\Exceptionless.1.5.2121\lib\net35\Exceptionless.Models.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
