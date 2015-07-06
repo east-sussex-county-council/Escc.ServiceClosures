@@ -55,6 +55,9 @@
     <Reference Include="Escc.AddressAndPersonalDetails">
       <HintPath>packages\Escc.AddressAndPersonalDetails.1.0.0\lib\Escc.AddressAndPersonalDetails.dll</HintPath>
     </Reference>
+    <Reference Include="EsccWebTeam.FormControls">
+      <HintPath>S:\_Reference DLLs\EsccWebTeam pre-NuGet\EsccWebTeam.FormControls - release\EsccWebTeam.FormControls.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.ExceptionManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=06fad7304560ae6f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>S:\_Reference DLLs\Microsoft Exception Management Application Block\Release strong-named .NET 2\Microsoft.ApplicationBlocks.ExceptionManagement.dll</HintPath>
@@ -97,10 +100,6 @@
     <Compile Include="XPathClosureData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Escc.FormControls\EsccWebTeam.FormControls.csproj">
-      <Project>{E6D5883F-99CE-4BF5-974A-66C542C43CFB}</Project>
-      <Name>EsccWebTeam.FormControls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Escc.HouseStyle\EsccWebTeam.HouseStyle.csproj">
       <Project>{1c429378-dbf2-4af7-88ac-c059aa163682}</Project>
       <Name>EsccWebTeam.HouseStyle</Name>
