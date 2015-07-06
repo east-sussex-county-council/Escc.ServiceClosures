@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Contextual information about a service closure

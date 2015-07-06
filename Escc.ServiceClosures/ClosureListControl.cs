@@ -9,7 +9,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using eastsussexgovuk.webservices.TextXhtml.HouseStyle;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Displays a list of closures as hCalendar events

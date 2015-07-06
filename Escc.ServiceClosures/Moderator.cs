@@ -4,7 +4,7 @@ using System.Text;
 using System.Net.Mail;
 using Escc.AddressAndPersonalDetails;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Someone responsible for checking that closure information is up-to-date and correct

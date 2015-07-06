@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Serialization;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// A council service which is subject to closures

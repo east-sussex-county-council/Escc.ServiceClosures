@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EsccWebTeam.ServiceClosures.Properties {
+namespace Escc.ServiceClosures.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

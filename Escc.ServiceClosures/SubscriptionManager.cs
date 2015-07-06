@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using eastsussexgovuk.webservices.TextXhtml.HouseStyle;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Manage and process subscriptions to closure information for services

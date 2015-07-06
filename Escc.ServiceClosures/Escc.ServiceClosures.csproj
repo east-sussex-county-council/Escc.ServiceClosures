@@ -8,8 +8,8 @@
     <ProjectGuid>{CC1C7E3E-DA3D-40F2-8184-DEA36C277CAD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EsccWebTeam.ServiceClosures</RootNamespace>
-    <AssemblyName>EsccWebTeam.ServiceClosures</AssemblyName>
+    <RootNamespace>Escc.ServiceClosures</RootNamespace>
+    <AssemblyName>Escc.ServiceClosures</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
@@ -38,8 +38,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\EsccWebTeam.ServiceClosures.XML</DocumentationFile>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug\Escc.ServiceClosures.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>S:\_Standards\VS.net Code Analysis\EsccWebTeam.CodeAnalysis.Library.Strict.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,12 +49,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\EsccWebTeam.ServiceClosures.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Escc.ServiceClosures.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Escc.AddressAndPersonalDetails">
-      <HintPath>packages\Escc.AddressAndPersonalDetails.1.0.0\lib\Escc.AddressAndPersonalDetails.dll</HintPath>
+    <Reference Include="Escc.AddressAndPersonalDetails, Version=1.0.0.0, Culture=neutral, PublicKeyToken=06fad7304560ae6f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Escc.AddressAndPersonalDetails.2.0.0\lib\Escc.AddressAndPersonalDetails.dll</HintPath>
     </Reference>
     <Reference Include="EsccWebTeam.FormControls">
       <HintPath>S:\_Reference DLLs\EsccWebTeam pre-NuGet\EsccWebTeam.FormControls - release\EsccWebTeam.FormControls.dll</HintPath>
@@ -100,25 +102,22 @@
     <Compile Include="XPathClosureData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Escc.HouseStyle\EsccWebTeam.HouseStyle.csproj">
+    <ProjectReference Include="..\..\Escc.HouseStyle\EsccWebTeam.HouseStyle.csproj">
       <Project>{1c429378-dbf2-4af7-88ac-c059aa163682}</Project>
       <Name>EsccWebTeam.HouseStyle</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include=".gitignore" />
     <Content Include="ClosuresRss.xslt" />
     <Content Include="EsccWebTeam.ServiceClosures.csproj.xslt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.example.config" />
-    <None Include="LICENSE.md" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -6,7 +6,7 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using eastsussexgovuk.webservices.TextXhtml.HouseStyle;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Manage moderators of closure information for services, and send notifications to them

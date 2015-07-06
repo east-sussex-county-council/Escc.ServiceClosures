@@ -9,7 +9,7 @@ using eastsussexgovuk.webservices.FormControls;
 using eastsussexgovuk.webservices.FormControls.Validators;
 using EsccWebTeam.FormControls.Validators;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Control for adding/editing service closures

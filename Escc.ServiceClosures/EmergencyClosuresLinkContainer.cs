@@ -8,7 +8,7 @@ using Microsoft.ApplicationBlocks.ExceptionManagement;
 using System.Web.UI.HtmlControls;
 using System.ComponentModel;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Container control which displays only if one of its child <see cref="EmergencyClosuresLink"/> controls is also displayed
@@ -16,7 +16,7 @@ namespace EsccWebTeam.ServiceClosures
     /// <example>
     /// <para>To present links to closure pages which only appear when emergency closures are in effect:</para>
     /// <code>
-    /// &lt;%@ Register TagPrefix=&quot;ServiceClosures&quot; Assembly=&quot;EsccWebTeam.ServiceClosures, Version=1.0.0.0, Culture=neutral, PublicKeyToken=06fad7304560ae6f&quot; Namespace=&quot;EsccWebTeam.ServiceClosures&quot; %&gt;
+    /// &lt;%@ Register TagPrefix=&quot;ServiceClosures&quot; Assembly=&quot;Escc.ServiceClosures, Version=1.0.0.0, Culture=neutral, PublicKeyToken=06fad7304560ae6f&quot; Namespace=&quot;Escc.ServiceClosures&quot; %&gt;
     ///
     /// &lt;ServiceClosures:EmergencyClosuresLinkContainer runat=&quot;server&quot;&gt;
     /// &lt;ContentTemplate&gt;

@@ -7,7 +7,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Microsoft.ApplicationBlocks.ExceptionManagement;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Links to a page about closed services if there are any which have been closed at short notice
@@ -82,7 +82,7 @@ namespace EsccWebTeam.ServiceClosures
             base.OnInit(e);
 
             // Always read from cache if possible
-            this.cacheKey = "EsccWebTeam.ServiceClosures.EmergencyClosuresLink." + this.ServiceType;
+            this.cacheKey = "Escc.ServiceClosures.EmergencyClosuresLink." + this.ServiceType;
             if (Context.Cache[cacheKey] != null)
             {
                 this.cachedHtml = Context.Cache[cacheKey] as string;

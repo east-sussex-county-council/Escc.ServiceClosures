@@ -10,7 +10,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Microsoft.ApplicationBlocks.ExceptionManagement;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Shows today's closure information for a specific service

@@ -10,7 +10,7 @@ using EsccWebTeam.FormControls.Validators;
 using System.ComponentModel;
 using System.Web.UI.HtmlControls;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Control for adding/editing reasons for service closure subscriptions

@@ -1,4 +1,4 @@
-﻿namespace EsccWebTeam.ServiceClosures
+﻿namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Indications of whether a service is closed or not

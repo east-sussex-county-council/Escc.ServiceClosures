@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
-using EsccWebTeam.ServiceClosures.Properties;
+using Escc.ServiceClosures.Properties;
 
-namespace EsccWebTeam.ServiceClosures
+namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Information about service closures read from XML data
