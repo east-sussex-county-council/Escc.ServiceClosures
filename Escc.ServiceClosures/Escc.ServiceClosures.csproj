@@ -57,8 +57,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Escc.AddressAndPersonalDetails.2.0.0\lib\Escc.AddressAndPersonalDetails.dll</HintPath>
     </Reference>
-    <Reference Include="EsccWebTeam.FormControls">
-      <HintPath>S:\_Reference DLLs\EsccWebTeam pre-NuGet\EsccWebTeam.FormControls - release\EsccWebTeam.FormControls.dll</HintPath>
+    <Reference Include="Escc.FormControls.WebForms">
+      <HintPath>..\packages\Escc.FormControls.WebForms.1.1.2\lib\Escc.FormControls.WebForms.dll</HintPath>
     </Reference>
     <Reference Include="Exceptionless">
       <HintPath>..\packages\Exceptionless.1.5.2121\lib\net35\Exceptionless.dll</HintPath>
