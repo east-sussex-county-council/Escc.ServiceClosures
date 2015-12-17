@@ -319,7 +319,7 @@ namespace Escc.ServiceClosures
 
             if (Service.ReasonsForClosure.Count > 0)
             {
-                EsccRangeValidator rangeReason = new EsccRangeValidator(statusList.ID, "The reason must be a valid reason code"); // message not friendly, but user should never see this
+                EsccRangeValidator rangeReason = new EsccRangeValidator(reasonList.ID, "The reason must be a valid reason code"); // message not friendly, but user should never see this
                 List<int> reasonIds = new List<int>(Service.ReasonsForClosure.Keys);
                 reasonIds.Sort();
                 rangeReason.MinimumValue = reasonIds[0].ToString(CultureInfo.CurrentCulture);
