@@ -4,6 +4,8 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
@@ -38,10 +40,17 @@ namespace Escc.ServiceClosures
             if (String.IsNullOrEmpty(serviceType.SingularText)) throw new ArgumentException("The SingularText property must be set", "serviceType");
             if (String.IsNullOrEmpty(Settings.Default.XmlFolder)) throw new ConfigurationErrorsException("The XmlFolder configuration setting must be set");
 
-            // Convert service type to filename
             string filename = Regex.Replace(serviceType.SingularText, "[^A-Za-z0-9]", String.Empty) + ".xml";
-            string folder = Settings.Default.XmlFolder.TrimEnd('\\');
-            filename = folder + "\\" + filename;
+
+            // Get folder from settings. Support original format of UNC path, and recommended format of app-relative URL which resolves to local path.
+            string folder = Settings.Default.XmlFolder;
+            if (!Path.IsPathRooted(folder))
+            {
+                folder = HostingEnvironment.MapPath(folder);
+            }
+            
+            // Convert service type to filename
+            filename = folder.TrimEnd('\\') + "\\" + filename;
             return filename;
         }
 

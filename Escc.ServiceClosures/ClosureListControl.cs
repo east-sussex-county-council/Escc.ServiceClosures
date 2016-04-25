@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using eastsussexgovuk.webservices.TextXhtml.HouseStyle;
+using Escc.Dates;
 
 namespace Escc.ServiceClosures
 {
@@ -186,7 +186,7 @@ namespace Escc.ServiceClosures
                 string when = String.Empty;
                 if (this.TodayOnly) when = " today";
                 else if (this.TomorrowOnly) when = " tomorrow";
-                else if (this.onlyDay != null) when = " on " + DateTimeFormatter.FullBritishDateWithDay(this.onlyDay.Value);
+                else if (this.onlyDay != null) when = " on " + this.onlyDay.Value.ToBritishDateWithDay();
 
                 HtmlGenericControl listPartlyClosed = new HtmlGenericControl("ol");
                 listPartlyClosed.Attributes["class"] = this.CssClass;
@@ -428,8 +428,8 @@ namespace Escc.ServiceClosures
                 {
                     HtmlGenericControl dtstart = new HtmlGenericControl("time");
                     dtstart.Attributes["class"] = "dtstart"; // hCalendar
-                    dtstart.Attributes["datetime"] = DateTimeFormatter.ISODate(closure.StartDate);
-                    dtstart.InnerText = DateTimeFormatter.FullBritishDateWithDay(closure.StartDate);
+                    dtstart.Attributes["datetime"] = closure.StartDate.ToIso8601Date();
+                    dtstart.InnerText = closure.StartDate.ToBritishDateWithDay();
                     dtstart.InnerText = dtstart.InnerText.Remove(dtstart.InnerText.Length - 4); // Remove the year, because we put that inside a separate tag
                     listItem.Controls.Add(dtstart);
 
@@ -438,7 +438,7 @@ namespace Escc.ServiceClosures
                     // It's referring to 00:00 hours at the start of 16 May, meaning the end of 15 May.
                     HtmlGenericControl dtend = new HtmlGenericControl("time");
                     dtend.Attributes["class"] = "dtend"; // hCalendar
-                    dtend.Attributes["datetime"] = DateTimeFormatter.ISODate(closure.StartDate.AddDays(1));
+                    dtend.Attributes["datetime"] = closure.StartDate.AddDays(1).ToIso8601Date();
                     dtend.InnerText = closure.StartDate.Year.ToString(CultureInfo.CurrentCulture);
                     listItem.Controls.Add(dtend);
                 }
@@ -446,8 +446,8 @@ namespace Escc.ServiceClosures
                 {
                     HtmlGenericControl dtstart = new HtmlGenericControl("time");
                     dtstart.Attributes["class"] = "dtstart dtstamp"; // hCalendar. Dtstamp doesn't need to be accurate, just needs to be present for Outlook 2003 to work.
-                    dtstart.Attributes["datetime"] = DateTimeFormatter.ISODate(closure.StartDate);
-                    dtstart.InnerText = DateTimeFormatter.FullBritishDateWithDay(closure.StartDate);
+                    dtstart.Attributes["datetime"] = closure.StartDate.ToIso8601Date();
+                    dtstart.InnerText = closure.StartDate.ToBritishDateWithDay();
                     listItem.Controls.Add(dtstart);
 
                     listItem.Controls.Add(new LiteralControl(" to "));
@@ -457,8 +457,8 @@ namespace Escc.ServiceClosures
                     // It's referring to 00:00 hours at the start of 16 May, meaning the end of 15 May.
                     HtmlGenericControl dtend = new HtmlGenericControl("time");
                     dtend.Attributes["class"] = "dtend"; // hCalendar
-                    dtend.Attributes["datetime"] = DateTimeFormatter.ISODate(closure.EndDate.AddDays(1));
-                    dtend.InnerText = DateTimeFormatter.FullBritishDateWithDay(closure.EndDate);
+                    dtend.Attributes["datetime"] = closure.EndDate.AddDays(1).ToIso8601Date();
+                    dtend.InnerText = closure.EndDate.ToBritishDateWithDay();
                     listItem.Controls.Add(dtend);
                 }
 

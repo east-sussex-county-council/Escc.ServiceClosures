@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
-using eastsussexgovuk.webservices.TextXhtml.HouseStyle;
+using Escc.Dates;
 
 namespace Escc.ServiceClosures
 {
@@ -57,7 +57,7 @@ namespace Escc.ServiceClosures
                 email.Body = String.Format("The following multi-day emergency {0} closures have not been confirmed today:{1}{1}", serviceType.SingularText, Environment.NewLine);
                 foreach (Service closedService in overdueClosures)
                 {
-                    email.Body += String.Format("{0} {1} due to {2}, {3}{4}{4}", closedService.Name, Regex.Replace(closedService.Closures[0].Status.ToString(), "([A-Z])", " $1").TrimStart().ToLower(CultureInfo.CurrentCulture), closedService.Closures[0].Reason.Reason, DateTimeFormatter.DateRange(closedService.Closures[0].StartDate, closedService.Closures[0].EndDate, false, false), Environment.NewLine);
+                    email.Body += String.Format("{0} {1} due to {2}, {3}{4}{4}", closedService.Name, Regex.Replace(closedService.Closures[0].Status.ToString(), "([A-Z])", " $1").TrimStart().ToLower(CultureInfo.CurrentCulture), closedService.Closures[0].Reason.Reason, closedService.Closures[0].StartDate.ToBritishDateRangeFromThisDateUntil(closedService.Closures[0].EndDate, false, false), Environment.NewLine);
                 }
                 email.Body += String.Format("++ Disclaimer{0}{0}", Environment.NewLine);
                 SmtpClient client = new SmtpClient();

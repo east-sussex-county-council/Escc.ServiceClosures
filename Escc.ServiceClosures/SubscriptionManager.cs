@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Xml.XPath;
-using eastsussexgovuk.webservices.TextXhtml.HouseStyle;
+using Escc.Dates;
 
 namespace Escc.ServiceClosures
 {
@@ -95,7 +95,7 @@ namespace Escc.ServiceClosures
         /// <returns></returns>
         private static string InsertDataIntoTemplate(Service service, Closure closure, string templateText)
         {
-            string dateText = DateTimeFormatter.DateRange(closure.StartDate, closure.EndDate, false, false);
+            string dateText = closure.StartDate.ToBritishDateRangeFromThisDateUntil(closure.EndDate, false, false);
             string notes = String.IsNullOrEmpty(closure.Notes) ? "None" : closure.Notes;
 
             templateText = templateText.Replace("{Service}", service.Name);
