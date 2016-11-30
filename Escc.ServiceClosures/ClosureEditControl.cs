@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Escc.FormControls.WebForms;
+using Escc.FormControls.WebForms.Validators;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using eastsussexgovuk.webservices.FormControls;
-using eastsussexgovuk.webservices.FormControls.Validators;
-using EsccWebTeam.FormControls.Validators;
 
 namespace Escc.ServiceClosures
 {
@@ -320,7 +319,7 @@ namespace Escc.ServiceClosures
 
             if (Service.ReasonsForClosure.Count > 0)
             {
-                EsccRangeValidator rangeReason = new EsccRangeValidator(statusList.ID, "The reason must be a valid reason code"); // message not friendly, but user should never see this
+                EsccRangeValidator rangeReason = new EsccRangeValidator(reasonList.ID, "The reason must be a valid reason code"); // message not friendly, but user should never see this
                 List<int> reasonIds = new List<int>(Service.ReasonsForClosure.Keys);
                 reasonIds.Sort();
                 rangeReason.MinimumValue = reasonIds[0].ToString(CultureInfo.CurrentCulture);
