@@ -11,11 +11,13 @@
     <xsl:param name="Rfc822Date" />
     <xsl:param name="Iso8601Date" />
 
-    <!-- Links to XHTML version of closure info, and the current feed-->
+    <!-- Links to XHTML version of closure info, and the current feed, and the services -->
     <xsl:param name="XhtmlVersionUrl" />
     <xsl:param name="CurrentUrl" />
-  
-    <!-- Require URLs for formatting the RSS feed to be supplied as parameters -->
+    <xsl:param name="ServiceUrlBeforeCode" />
+    <xsl:param name="ServiceUrlAfterCode" />
+
+  <!-- Require URLs for formatting the RSS feed to be supplied as parameters -->
     <xsl:param name="HtmlXsltUrl" />
     <xsl:param name="CssUrl" />
     <xsl:param name="ImageUrl" />
@@ -85,7 +87,7 @@
         <xsl:variable name="ServiceTypeSingular" select="closures:Type/closures:SingularText"/>
         <xsl:variable name="ServiceTypePlural" select="closures:Type/closures:PluralText"/>
         <xsl:variable name="CurrentServiceCode" select="closures:Code"/>
-      <xsl:variable name="ServiceUri" select="closures:LinkedDataUri" />
+        <xsl:variable name="ServiceUri" select="closures:LinkedDataUri" />
         
         <!-- Create two variables which can be used to convert a string to lowercase -->
         <xsl:variable name="Lowercase">abcdefghijklmnopqrstuvwxyz</xsl:variable>
@@ -152,11 +154,21 @@
                 </xsl:if>
 
                 <!-- Include a link to the most relevant page available, because Firefox Live Bookmarks needs a link to work. -->
-                <link>
+              <link>
+                <xsl:choose>
+                  <xsl:when test="$ServiceUrlBeforeCode != ''">
+                    <xsl:value-of select="$ServiceUrlBeforeCode"/>
+                    <xsl:value-of select="$CurrentServiceCode"/>
+                    <xsl:value-of select="$ServiceUrlAfterCode"/>
+                </xsl:when>
+                <xsl:otherwise>
                     <xsl:value-of select="$ServiceUri"/>
-                </link>
-                
-                <!-- Use the date the closure was last updated as the date for the item. 0001-01-01T00:00:00 is DateTime.MinValue in C# -->
+                </xsl:otherwise>
+              </xsl:choose>
+              </link>
+
+
+              <!-- Use the date the closure was last updated as the date for the item. 0001-01-01T00:00:00 is DateTime.MinValue in C# -->
                 <xsl:choose>
                     <xsl:when test="closures:DateModified != '0001-01-01T00:00:00'">
                         <pubDate><xsl:call-template name="FormatRFC822Date">
