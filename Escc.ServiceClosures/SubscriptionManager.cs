@@ -38,12 +38,14 @@ namespace Escc.ServiceClosures
             // Create an email for each subscriber, because it contains a unique unsubscribe link
             // Set subject and body, inserting details of closure
             MailAddress standardFrom = new MailAddress(templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/From").Value);
+            string standardBcc = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/Bcc").Value;
             string standardSubject = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/Subject").Value;
             string standardBody = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/Body").Value;
             standardSubject = InsertDataIntoTemplate(service, closure, standardSubject);
             standardBody = InsertDataIntoTemplate(service, closure, standardBody);
 
             MailAddress officialFrom = new MailAddress(templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/From").Value);
+            string officialBcc = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/Bcc").Value;
             string officialSubject = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/Subject").Value;
             string officialBody = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/Body").Value;
             officialSubject = InsertDataIntoTemplate(service, closure, officialSubject);
@@ -57,6 +59,14 @@ namespace Escc.ServiceClosures
                     MailMessage email = new MailMessage();
                     email.From = sub.OfficialNotification ? officialFrom : standardFrom;
                     email.To.Add(new MailAddress(sub.Address));
+
+                    string addBcc = sub.OfficialNotification ? officialBcc : standardBcc;
+                    // Do we have a blind copy recipient?
+                    if (!string.IsNullOrEmpty(addBcc))
+                    {
+                        // Yes, then blind copy them in
+                        email.Bcc.Add(new MailAddress(addBcc));
+                    }
 
                     // Track which ones are done so we don't send two emails to the same address if they happen to
                     // have a global and a individual service subscription
