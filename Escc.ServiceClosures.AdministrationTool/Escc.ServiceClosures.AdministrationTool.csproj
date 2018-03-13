@@ -106,7 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.example.config" />
-    <None Include="app.config" />
+    <Content Include="app.config" />
     <None Include="packages.config" />
     <None Include="Web References\SchoolsInformationService\Closure1.datasource">
       <DependentUpon>Reference.map</DependentUpon>
