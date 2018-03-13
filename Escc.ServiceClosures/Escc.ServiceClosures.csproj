@@ -119,9 +119,13 @@
     <None Include="app.config" />
     <None Include="app.example.config" />
     <None Include="build-nuget.cmd" />
+    <None Include="Escc.ServiceClosures.Rss.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Escc.ServiceClosures.nuspec">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Escc.ServiceClosures.Rss.targets" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
