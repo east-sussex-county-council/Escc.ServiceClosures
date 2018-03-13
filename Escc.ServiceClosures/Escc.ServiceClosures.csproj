@@ -12,8 +12,7 @@
     <AssemblyName>Escc.ServiceClosures</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>S:\_Strong names\esccdev.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>false</SignAssembly>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
