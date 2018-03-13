@@ -7,11 +7,11 @@ using System.Net;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EsccWebTeam.ServiceClosures.AdministrationTool")]
+[assembly: AssemblyTitle("Escc.ServiceClosures.AdministrationTool")]
 [assembly: AssemblyDescription("Maintains service closure information on www.eastsussex.gov.uk")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("East Sussex County Council")]
-[assembly: AssemblyProduct("EsccWebTeam.ServiceClosures.AdministrationTool")]
+[assembly: AssemblyProduct("Escc.ServiceClosures.AdministrationTool")]
 [assembly: AssemblyCopyright("Copyright © East Sussex County Council 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

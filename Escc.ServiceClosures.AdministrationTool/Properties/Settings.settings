@@ -1,21 +1,9 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EsccWebTeam.ServiceClosures.AdministrationTool.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Escc.ServiceClosures.AdministrationTool.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="EsccWebTeam_ServiceClosures_AdministrationTool_SchoolsInformationService_SchoolsInformationWebService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://localhost/Czone.WebService.SchoolsInformation/SchoolsInformationWebService.asmx</Value>
-    </Setting>
-    <Setting Name="SchoolTwitterConsumerKey" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">sqBBKghFjYNv84oy4ouLdA</Value>
-    </Setting>
-    <Setting Name="SchoolTwitterConsumerSecret" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">TCW3WtfspIhfSIQtR4fKDQUZ1Lmx5jdFkcSVEoqpCLI</Value>
-    </Setting>
-    <Setting Name="SchoolTwitterAccessToken" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">174187586-mNSz7ktgLpFQdRZEjEce4w26o9Di3M8R9arIyXfw</Value>
-    </Setting>
-    <Setting Name="SchoolTwitterAccessTokenSecret" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">dPYp26zBOiid4Y3ORK5wUOVv6ORfscWpUDGKAvI1XwM</Value>
     </Setting>
   </Settings>
 </SettingsFile>
