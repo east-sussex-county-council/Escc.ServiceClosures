@@ -17,7 +17,7 @@ namespace Escc.ServiceClosures
     /// </summary>
     public class ClosedTodayControl : WebControl
     {
-        private XPathClosureData closureData;
+        private IServiceClosureData closureData;
         private Collection<Closure> closures = null;
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace Escc.ServiceClosures
             // Read the relevant XML file
             try
             {
-                closureData = XPathClosureData.Create(this.Service.Type);
+                closureData = new FileDataSource().ReadClosureData(this.Service.Type);
             }
             catch (FileNotFoundException ex)
             {

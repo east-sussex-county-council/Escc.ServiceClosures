@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using proxy = Escc.ServiceClosures.AdministrationTool.SchoolsInformationService;
-using System.IO;
-using System.Xml.Serialization;
-using System.Xml;
-using System.Text;
-using System.Threading;
 using Escc.Net;
 using Exceptionless;
 using log4net;
@@ -125,76 +120,14 @@ namespace Escc.ServiceClosures.AdministrationTool
         /// </summary>
         private static void PullSchoolData()
         {
-            using (SchoolsInformationService.SchoolsInformationWebService webService = new SchoolsInformationService.SchoolsInformationWebService())
-            {
-                webService.Proxy = new ConfigurationProxyProvider().CreateProxy();
-                webService.Credentials = new ConfigurationWebApiCredentialsProvider().CreateCredentials();
-                string sidNamespace = "http://czoneapps.eastsussex.gov.uk/Czone.WebService.SchoolsInformation/";
+            var dataSource = new SchoolWebServiceDataSource(new ConfigurationWebApiCredentialsProvider(), new ConfigurationProxyProvider(), log);
+            var closureInfo = dataSource.ReadClosureInfo(new ServiceType("school"));
 
-                string filename = XPathClosureData.XmlPath(new ServiceType("school"));
-                string tempFile = filename + "." + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "-" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + "-" + DateTime.Now.Millisecond + ".xml";
-
-                // Serialise closures to xml as UTF8
-                log.Info("Requesting data using " + webService.Url);
-                proxy.ClosureInfo dataToSerialise = webService.ClosureInfoAllSchools();
-                MemoryStream memoryStream = new MemoryStream();
-                log.Info("Creating serialiser");
-                XmlSerializer xs = new XmlSerializer(typeof(proxy.ClosureInfo), sidNamespace);
-                log.Info("Creating " + tempFile);
-                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(tempFile, Encoding.UTF8))
-                {
-                    log.Info("Serialising data to " + tempFile);
-                    xs.Serialize(xmlTextWriter, dataToSerialise);
-                }
-
-                // Overwrite the current data
-                log.Info("Writing data to file");
-                OverwriteXml(filename, tempFile, 5);
-
-                // Log success
-                log.InfoFormat("School data refreshed using {0}", webService.Url);
-            }
+            var repository = new FileRepository(log);
+            repository.SaveClosureInfo(new ServiceType("school"), closureInfo);
+            log.InfoFormat("School data refreshed using {0}", dataSource.GetType().ToString());
         }
         #endregion
-
-        /// <summary>
-        /// Overwrites the XML.
-        /// </summary>
-        /// <param name="filename">The filename.</param>
-        /// <param name="tempFile">The temp file.</param>
-        /// <param name="attemptsLeft">The number of attempts left.</param>
-        private static void OverwriteXml(string filename, string tempFile, int attemptsLeft)
-        {
-            try
-            {
-                File.Copy(tempFile, filename, true);
-                File.Delete(tempFile);
-            }
-            catch (IOException)
-            {
-                // Often when it tries to update the XML there's an IOException, because a web page
-                // is in the process of reading the file. All web pages are cached though, so if we
-                // keep retrying we should be able to write it. Limited number of attempts though to
-                // avoid any risk of an infinite loop, or a conflict with the next scheduled run of this tool.
-                if (attemptsLeft > 0)
-                {
-                    attemptsLeft--;
-                    log.Info("Unable to write file, trying again in 10 seconds");
-                    Thread.Sleep(10000); // wait 10 secs to allow file to become available
-                    OverwriteXml(filename, tempFile, attemptsLeft);
-                }
-                else
-                {
-                    log.Error("Unable to write file, giving up");
-
-                    // Don't leave temp file hanging around
-                    File.Delete(tempFile);
-
-                    // Re-throw exception, which will be caught and reported outside this method
-                    throw;
-                }
-            }
-        }
 
         /// <summary>
         /// Notifies moderators about overdue confirmations for multi-day closures

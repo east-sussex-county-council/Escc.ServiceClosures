@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
-using Escc.ServiceClosures.Properties;
 
 namespace Escc.ServiceClosures
 {
     /// <summary>
     /// Information about service closures read from XML data
     /// </summary>
-    public class XPathClosureData : XPathDocument
+    public class XPathClosureData : XPathDocument, IServiceClosureData
     {
         private XmlNamespaceManager nsManager;
         private string xmlNamespace;
@@ -24,35 +19,14 @@ namespace Escc.ServiceClosures
         /// <summary>
         /// Initializes a new instance of the <see cref="XPathClosureData"/> class.
         /// </summary>
-        /// <param name="uri">The path of the file that contains the XML data.</param>
-        public XPathClosureData(string uri) : base(uri) { }
+        /// <param name="stream">The <see cref="T:System.IO.Stream" /> object that contains the XML data.</param>
+        public XPathClosureData(Stream stream) : base(stream) { }
 
         /// <summary>
-        /// Gets the path to the XML file containing the closure data for a given type of service.
+        /// Initializes a new instance of the <see cref="XPathClosureData"/> class.
         /// </summary>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Thrown if serviceType is null</exception>
-        /// <exception cref="ArgumentException">Thrown if serviceType.SingularText is not set</exception>
-        public static string XmlPath(ServiceType serviceType)
-        {
-            if (serviceType == null) throw new ArgumentNullException("serviceType");
-            if (String.IsNullOrEmpty(serviceType.SingularText)) throw new ArgumentException("The SingularText property must be set", "serviceType");
-            if (String.IsNullOrEmpty(Settings.Default.XmlFolder)) throw new ConfigurationErrorsException("The XmlFolder configuration setting must be set");
-
-            string filename = Regex.Replace(serviceType.SingularText, "[^A-Za-z0-9]", String.Empty) + ".xml";
-
-            // Get folder from settings. Support original format of UNC path, and recommended format of app-relative URL which resolves to local path.
-            string folder = Settings.Default.XmlFolder;
-            if (!Path.IsPathRooted(folder))
-            {
-                folder = HostingEnvironment.MapPath(folder);
-            }
-            
-            // Convert service type to filename
-            filename = folder.TrimEnd('\\') + "\\" + filename;
-            return filename;
-        }
+        /// <param name="uri">The path of the file that contains the XML data.</param>
+        public XPathClosureData(string uri) : base(uri) { }
 
         /// <summary>
         /// Gets whether to show the status all services.
@@ -82,16 +56,6 @@ namespace Escc.ServiceClosures
 
                 return Int32.Parse(shortNoticeNode.Value);
             }
-        }
-
-        /// <summary>
-        /// Creates an XPathClosureData document from closure data for the specified service type.
-        /// </summary>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <returns></returns>
-        public static XPathClosureData Create(ServiceType serviceType)
-        {
-            return new XPathClosureData(XmlPath(serviceType));
         }
 
         /// <summary>

@@ -91,6 +91,11 @@
     <Compile Include="ClosureReason.cs" />
     <Compile Include="ClosureStatus.cs" />
     <Compile Include="ClosedTodayControl.cs" />
+    <Compile Include="FileDataSource.cs" />
+    <Compile Include="IServiceClosureDataSource.cs" />
+    <Compile Include="IServiceClosureInfoDataSource.cs" />
+    <Compile Include="IServiceClosureData.cs" />
+    <Compile Include="IServiceClosureRepository.cs" />
     <Compile Include="ModeratorManager.cs" />
     <Compile Include="Moderator.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

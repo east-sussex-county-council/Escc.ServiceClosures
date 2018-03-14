@@ -14,7 +14,7 @@ namespace Escc.ServiceClosures
     /// </summary>
     public class EmergencyClosuresLink : WebControl
     {
-        private XPathClosureData closureData;
+        private IServiceClosureData closureData;
         private string cacheKey;
         private string cachedHtml;
 
@@ -94,7 +94,7 @@ namespace Escc.ServiceClosures
                 // Otherwise read the relevant XML file
                 try
                 {
-                    closureData = XPathClosureData.Create(new ServiceType(this.ServiceType));
+                    closureData = new FileDataSource().ReadClosureData(new ServiceType(this.ServiceType));
 
                     // Set visibility early, so that it can be picked up by <see cref="EmergencyClosuresLinkContainer"/>
                     // if that is used as the parent control
