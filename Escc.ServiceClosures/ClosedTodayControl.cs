@@ -134,16 +134,12 @@ namespace Escc.ServiceClosures
             if (closures != null) return closures.Count;
 
             // Read the relevant XML file
-            try
-            {
-                closureData = new AzureBlobStorageDataSource(ConfigurationManager.ConnectionStrings["Escc.ServiceClosures.AzureStorage"].ConnectionString, "service-closures").ReadClosureData(this.Service.Type);
-            }
-            catch (FileNotFoundException ex)
-            {
-                // Publish the exception so that we know about it, but ensure the page
-                // continues to load uninterrupted
-                ex.ToExceptionless().Submit();
+            closureData = new AzureBlobStorageDataSource(ConfigurationManager.ConnectionStrings["Escc.ServiceClosures.AzureStorage"].ConnectionString, "service-closures").ReadClosureData(this.Service.Type);
+            
+            if (closureData == null)
+            { 
                 this.Visible = false;
+                return 0;
             }
 
             closures = (TooLateForToday()) ? closureData.ClosuresTomorrowByServiceCode(this.Service.Code, true) : closureData.ClosuresTodayByServiceCode(this.Service.Code, true);

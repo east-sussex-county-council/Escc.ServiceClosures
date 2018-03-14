@@ -44,7 +44,7 @@ namespace Escc.ServiceClosures.AdministrationTool
                 xs.Serialize(stream, closureInfo);
                 stream.Position = 0;
 
-                var blob = blobContainer.GetBlockBlobReference(serviceType.SingularText + ".xml");
+                var blob = blobContainer.GetBlockBlobReference(serviceType.SingularText.ToLowerInvariant() + ".xml");
                 blob.UploadFromStream(stream);
             }
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using Exceptionless;
+using Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,13 +38,25 @@ namespace Escc.ServiceClosures
             var blobContainer = blobClient.GetContainerReference(_containerName);
             blobContainer.CreateIfNotExistsAsync().Wait();
 
-            var blob = blobContainer.GetBlockBlobReference(serviceType.SingularText + ".xml");
+            var blob = blobContainer.GetBlockBlobReference(serviceType.SingularText.ToLowerInvariant() + ".xml");
 
-            using (var stream = new MemoryStream())
+            try
             {
-                blob.DownloadToStream(stream);
-                stream.Position = 0;
-                return new XPathClosureData(stream);
+                using (var stream = new MemoryStream())
+                {
+                    blob.DownloadToStream(stream);
+                    stream.Position = 0;
+                    return new XPathClosureData(stream);
+                }
+            }
+            catch (StorageException ex)
+            {
+                var realException = ex.InnerException as System.Net.WebException;
+                if (realException == null) throw;
+
+                // Report the error and return a response with no data
+                ex.ToExceptionless().Submit();
+                return null;
             }
         }
     }
