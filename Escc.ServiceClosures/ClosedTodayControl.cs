@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Exceptionless;
+using System.Configuration;
 
 namespace Escc.ServiceClosures
 {
@@ -135,7 +136,7 @@ namespace Escc.ServiceClosures
             // Read the relevant XML file
             try
             {
-                closureData = new FileDataSource().ReadClosureData(this.Service.Type);
+                closureData = new AzureBlobStorageDataSource(ConfigurationManager.ConnectionStrings["Escc.ServiceClosures.AzureStorage"].ConnectionString, "service-closures").ReadClosureData(this.Service.Type);
             }
             catch (FileNotFoundException ex)
             {

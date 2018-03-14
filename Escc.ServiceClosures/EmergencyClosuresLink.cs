@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Exceptionless;
+using System.Configuration;
 
 namespace Escc.ServiceClosures
 {
@@ -94,7 +95,7 @@ namespace Escc.ServiceClosures
                 // Otherwise read the relevant XML file
                 try
                 {
-                    closureData = new FileDataSource().ReadClosureData(new ServiceType(this.ServiceType));
+                    closureData = new AzureBlobStorageDataSource(ConfigurationManager.ConnectionStrings["Escc.ServiceClosures.AzureStorage"].ConnectionString, "service-closures").ReadClosureData(new ServiceType(this.ServiceType));
 
                     // Set visibility early, so that it can be picked up by <see cref="EmergencyClosuresLinkContainer"/>
                     // if that is used as the parent control

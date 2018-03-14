@@ -5,6 +5,7 @@ using Escc.Net;
 using Exceptionless;
 using log4net;
 using log4net.Config;
+using System.Configuration;
 
 namespace Escc.ServiceClosures.AdministrationTool
 {
@@ -123,7 +124,8 @@ namespace Escc.ServiceClosures.AdministrationTool
             var dataSource = new SchoolWebServiceDataSource(new ConfigurationWebApiCredentialsProvider(), new ConfigurationProxyProvider(), log);
             var closureInfo = dataSource.ReadClosureInfo(new ServiceType("school"));
 
-            var repository = new FileRepository(log);
+            log.Info("Saving school data to Azure blob storage");
+            var repository = new AzureBlobStorageRepository(ConfigurationManager.ConnectionStrings["Escc.ServiceClosures.AzureStorage"].ConnectionString, "service-closures");
             repository.SaveClosureInfo(new ServiceType("school"), closureInfo);
             log.InfoFormat("School data refreshed using {0}", dataSource.GetType().ToString());
         }
