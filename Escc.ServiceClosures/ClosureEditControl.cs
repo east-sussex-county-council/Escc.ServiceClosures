@@ -1,4 +1,5 @@
-﻿using Escc.FormControls.WebForms;
+﻿using Escc.Dates;
+using Escc.FormControls.WebForms;
 using Escc.FormControls.WebForms.Validators;
 using System;
 using System.Collections.Generic;
@@ -163,8 +164,8 @@ namespace Escc.ServiceClosures
             // When?
             startDate.ID = "start";
             startDate.Label = "First day closed";
-            startDate.FirstYear = AllowClosuresInPast ? (DateTime.Now.Year - 2) : DateTime.Now.Year;
-            startDate.LastYear = (DateTime.Now.Year + 2);
+            startDate.FirstYear = AllowClosuresInPast ? (DateTime.Now.ToUkDateTime().Year - 2) : DateTime.Now.ToUkDateTime().Year;
+            startDate.LastYear = (DateTime.Now.ToUkDateTime().Year + 2);
             startDate.Required = true;
             startDate.ShowBlankDateOption = false;
             startDate.CssClass = "datePart";
@@ -188,8 +189,8 @@ namespace Escc.ServiceClosures
 
             endDate.ID = "end";
             endDate.Label = "Last day closed";
-            endDate.FirstYear = AllowClosuresInPast ? (DateTime.Now.Year - 2) : DateTime.Now.Year;
-            endDate.LastYear = (DateTime.Now.Year + 2);
+            endDate.FirstYear = AllowClosuresInPast ? (DateTime.Now.ToUkDateTime().Year - 2) : DateTime.Now.ToUkDateTime().Year;
+            endDate.LastYear = (DateTime.Now.ToUkDateTime().Year + 2);
             endDate.Required = true;
             endDate.ShowBlankDateOption = false;
             endDate.CssClass = "datePart";

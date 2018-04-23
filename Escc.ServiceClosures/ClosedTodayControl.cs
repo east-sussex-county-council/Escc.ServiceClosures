@@ -10,6 +10,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Exceptionless;
 using System.Configuration;
+using Escc.Dates;
 
 namespace Escc.ServiceClosures
 {
@@ -74,7 +75,7 @@ namespace Escc.ServiceClosures
         /// <returns></returns>
         private bool TooLateForToday()
         {
-            return (DateTime.Now > DateTime.Today.Date.AddHours(16)); // change display after 4pm
+            return (DateTime.Now.ToUkDateTime() > DateTime.Today.Date.AddHours(16)); // change display after 4pm
         }
 
         /// <summary>
