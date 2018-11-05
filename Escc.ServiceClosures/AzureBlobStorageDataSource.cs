@@ -1,8 +1,9 @@
-﻿using Exceptionless;
+﻿using Microsoft.ApplicationInsights;
 using Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Escc.ServiceClosures
 {
@@ -31,7 +32,7 @@ namespace Escc.ServiceClosures
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <returns></returns>
-        public IServiceClosureData ReadClosureData(ServiceType serviceType)
+        public async Task<IServiceClosureData> ReadClosureDataAsync(ServiceType serviceType)
         {
             var storageAccount = CloudStorageAccount.Parse(_connectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();
@@ -44,7 +45,7 @@ namespace Escc.ServiceClosures
             {
                 using (var stream = new MemoryStream())
                 {
-                    blob.DownloadToStream(stream);
+                    await blob.DownloadToStreamAsync(stream);
                     stream.Position = 0;
                     return new XPathClosureData(stream);
                 }
@@ -55,7 +56,7 @@ namespace Escc.ServiceClosures
                 if (realException == null) throw;
 
                 // Report the error and return a response with no data
-                ex.ToExceptionless().Submit();
+                new TelemetryClient().TrackException(ex);
                 return null;
             }
         }

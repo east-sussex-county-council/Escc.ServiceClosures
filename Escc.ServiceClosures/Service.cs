@@ -12,15 +12,6 @@ namespace Escc.ServiceClosures
     /// </summary>
     public class Service
     {
-        #region Fields
-
-        private Collection<Closure> closures = new Collection<Closure>();
-        private Dictionary<int, ClosureReason> reasons = new Dictionary<int, ClosureReason>();
-
-        #endregion // Fields
-
-        #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Service"/> class.
         /// </summary>
@@ -28,10 +19,6 @@ namespace Escc.ServiceClosures
         {
             this.Type = new ServiceType("service", "services");
         }
-
-        #endregion // Constructors
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the database id of the service.
@@ -100,18 +87,14 @@ namespace Escc.ServiceClosures
         /// Gets the closures currently scheduled for the service.
         /// </summary>
         /// <value>The closures currently scheduled.</value>
-        public Collection<Closure> Closures { get { return this.closures; } }
+        public Collection<Closure> Closures { get; private set; } = new Collection<Closure>();
 
         /// <summary>
         /// Gets the reasons for which the service may be closed.
         /// </summary>
         /// <value>The reasons for closure.</value>
         [XmlIgnore]
-        public Dictionary<int, ClosureReason> ReasonsForClosure { get { return this.reasons; } }
-
-        #endregion // Properties
-
-        #region Methods
+        public Dictionary<int, ClosureReason> ReasonsForClosure { get; private set; } = new Dictionary<int, ClosureReason>();
 
         /// <summary>
         /// Checks whether the service has closure information for a specific day
@@ -130,25 +113,5 @@ namespace Escc.ServiceClosures
 
             return closuresOnDay;
         }
-
-        /// <summary>
-        /// Checks whether the service has closure information for today
-        /// </summary>
-        /// <returns>Closure information if present</returns>
-        public Collection<Closure> CheckForClosuresToday()
-        {
-            return CheckForClosures(DateTime.Today);
-        }
-
-        /// <summary>
-        /// Checks whether the service has closure information for tomorrow
-        /// </summary>
-        /// <returns>Closure information if present</returns>
-        public Collection<Closure> CheckForClosuresTomorrow()
-        {
-            return CheckForClosures(DateTime.Today.AddDays(1));
-        }
-
-        #endregion // Methods
     }
 }

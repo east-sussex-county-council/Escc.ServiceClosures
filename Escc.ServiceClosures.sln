@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.ServiceClosures", "Escc.ServiceClosures\Escc.ServiceClosures.csproj", "{CC1C7E3E-DA3D-40F2-8184-DEA36C277CAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.ServiceClosures.WebForms", "Escc.ServiceClosures.WebForms\Escc.ServiceClosures.WebForms.csproj", "{CC1C7E3E-DA3D-40F2-8184-DEA36C277CAD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9C71E8C2-BF24-4598-AF18-A9B1AF3FC7A0}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,6 +17,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.ServiceClosures.Tests", "Escc.ServiceClosures.Tests\Escc.ServiceClosures.Tests.csproj", "{14FE4953-8409-41FA-8F4A-9883CA53D316}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.ServiceClosures.AdministrationTool", "Escc.ServiceClosures.AdministrationTool\Escc.ServiceClosures.AdministrationTool.csproj", "{704B1C4D-D568-4482-9311-8A6437B85E73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.ServiceClosures", "Escc.ServiceClosures\Escc.ServiceClosures.csproj", "{12F16E83-CC01-4221-A2CE-2DF6491F4DF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 		{704B1C4D-D568-4482-9311-8A6437B85E73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{704B1C4D-D568-4482-9311-8A6437B85E73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{704B1C4D-D568-4482-9311-8A6437B85E73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12F16E83-CC01-4221-A2CE-2DF6491F4DF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12F16E83-CC01-4221-A2CE-2DF6491F4DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12F16E83-CC01-4221-A2CE-2DF6491F4DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12F16E83-CC01-4221-A2CE-2DF6491F4DF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

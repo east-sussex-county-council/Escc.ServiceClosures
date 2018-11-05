@@ -29,36 +29,6 @@ namespace Escc.ServiceClosures
         public XPathClosureData(string uri) : base(uri) { }
 
         /// <summary>
-        /// Gets whether to show the status all services.
-        /// </summary>
-        /// <returns></returns>
-        public ShowAllServicesView ShowAllServicesView
-        {
-            get
-            {
-                XPathNavigator showAllServicesNode = this.SelectNode("/ns:ClosureInfo/ns:ShowAllServicesView");
-                if (showAllServicesNode == null) return ShowAllServicesView.Auto;
-
-                return (ShowAllServicesView)Enum.Parse(typeof(ShowAllServicesView), showAllServicesNode.Value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the number days in advance a closure must be logged, otherwise it is regarded as logged at short notice.
-        /// </summary>
-        /// <returns></returns>
-        public int ShortNoticeDays
-        {
-            get
-            {
-                XPathNavigator shortNoticeNode = this.SelectNode("/ns:ClosureInfo/ns:ShortNoticeDays");
-                if (shortNoticeNode == null) return 5; // default value
-
-                return Int32.Parse(shortNoticeNode.Value);
-            }
-        }
-
-        /// <summary>
         /// Gets a namespace manager which sets up the namespace with an "ns" prefix
         /// </summary>
         private XmlNamespaceManager NamespaceManager
@@ -179,83 +149,6 @@ namespace Escc.ServiceClosures
         }
 
         /// <summary>
-        /// Checks whether a emergency closure exists today.
-        /// </summary>
-        /// <returns></returns>
-        public bool EmergencyClosureExistsToday()
-        {
-            // First check if there are any closures with a reason that's marked as an emergency
-            XPathNodeIterator it = this.SelectNodes(GetXPathForClosuresOnSingleDay(DateTime.Today) + "/ns:Reason/ns:Emergency[.='true']");
-            return (it.Count > 0);
-        }
-
-        /// <summary>
-        /// Checks whether a emergency closure exists tomorrow.
-        /// </summary>
-        /// <returns></returns>
-        public bool EmergencyClosureExistsTomorrow()
-        {
-            // First check if there are any closures with a reason that's marked as an emergency
-            XPathNodeIterator it = this.SelectNodes(GetXPathForClosuresOnSingleDay(DateTime.Today.AddDays(1)) + "/ns:Reason/ns:Emergency[.='true']");
-            return (it.Count > 0);
-        }
-
-        /// <summary>
-        /// Checks whether a closure has been announced at short notice.
-        /// </summary>
-        /// <param name="daysNotice">The maximum number of days' notice.</param>
-        /// <returns></returns>
-        public bool ClosedTodayAtShortNotice(int daysNotice)
-        {
-            // Check if there are any closures marked as short notice
-            XPathNodeIterator it = this.SelectNodes(String.Format(CultureInfo.InvariantCulture, GetXPathForClosuresOnSingleDay(DateTime.Today) + "/ns:DaysNotice[number(.)<={0}]", daysNotice));
-            return (it.Count > 0);
-        }
-
-        /// <summary>
-        /// Checks whether a closure has been announced at short notice.
-        /// </summary>
-        /// <param name="daysNotice">The maximum number of days' notice.</param>
-        /// <returns></returns>
-        public bool ClosedTomorrowAtShortNotice(int daysNotice)
-        {
-            // Check if there are any closures marked as short notice
-            XPathNodeIterator it = this.SelectNodes(String.Format(CultureInfo.InvariantCulture, GetXPathForClosuresOnSingleDay(DateTime.Today.AddDays(1)) + "/ns:DaysNotice[number(.)<={0}]", daysNotice));
-            return (it.Count > 0);
-        }
-
-        /// <summary>
-        /// Checks whether all services may be affected by a closure announced for a specific day.
-        /// </summary>
-        /// <param name="day">The day.</param>
-        /// <returns></returns>
-        public bool AllServicesAffected(DateTime day)
-        {
-            XPathNodeIterator it = this.SelectNodes(GetXPathForClosuresOnSingleDay(day) + "/ns:Reason/ns:MayAffectAllServices[.='true']");
-            return (it.Count > 0);
-        }
-
-        /// <summary>
-        /// Checks whether all services may be affected by a closure announced for today.
-        /// </summary>
-        /// <returns></returns>
-        public bool AllServicesAffectedToday()
-        {
-            XPathNodeIterator it = this.SelectNodes(GetXPathForClosuresOnSingleDay(DateTime.Today) + "/ns:Reason/ns:MayAffectAllServices[.='true']");
-            return (it.Count > 0);
-        }
-
-        /// <summary>
-        /// Checks whether all services may be affected by a closure announced for tomorrow.
-        /// </summary>
-        /// <returns></returns>
-        public bool AllServicesAffectedTomorrow()
-        {
-            XPathNodeIterator it = this.SelectNodes(GetXPathForClosuresOnSingleDay(DateTime.Today.AddDays(1)) + "/ns:Reason/ns:MayAffectAllServices[.='true']");
-            return (it.Count > 0);
-        }
-
-        /// <summary>
         /// Gets the closures for a service identified by its code.
         /// </summary>
         /// <param name="code">The code.</param>
@@ -285,7 +178,7 @@ namespace Escc.ServiceClosures
         /// <param name="code">The code.</param>
         /// <param name="emergencyOnly">if set to <c>true</c> get emergency closures only.</param>
         /// <returns></returns>
-        private Collection<Closure> ClosuresByServiceCodeOnSingleDay(DateTime day, string code, bool emergencyOnly)
+        public Collection<Closure> ClosuresByDateAndServiceCode(DateTime day, string code, bool emergencyOnly)
         {
             if (String.IsNullOrEmpty(code)) return new Collection<Closure>();
 
@@ -309,28 +202,6 @@ namespace Escc.ServiceClosures
                 closures.Add(closure);
             }
             return closures;
-        }
-
-        /// <summary>
-        /// Gets the closures for today for a service identified by its code.
-        /// </summary>
-        /// <param name="code">The code.</param>
-        /// <param name="emergencyOnly">if set to <c>true</c> get emergency closures only.</param>
-        /// <returns></returns>
-        public Collection<Closure> ClosuresTodayByServiceCode(string code, bool emergencyOnly)
-        {
-            return this.ClosuresByServiceCodeOnSingleDay(DateTime.Today, code, emergencyOnly);
-        }
-
-        /// <summary>
-        /// Gets the closures for tomorrow for a service identified by its code.
-        /// </summary>
-        /// <param name="code">The code.</param>
-        /// <param name="emergencyOnly">if set to <c>true</c> get emergency closures only.</param>
-        /// <returns></returns>
-        public Collection<Closure> ClosuresTomorrowByServiceCode(string code, bool emergencyOnly)
-        {
-            return this.ClosuresByServiceCodeOnSingleDay(DateTime.Today.AddDays(1), code, emergencyOnly);
         }
 
         /// <summary>

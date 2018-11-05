@@ -32,7 +32,6 @@ namespace Escc.ServiceClosures
 
             // default to showing all kinds of closure
             this.ShowEmergencyClosures = true;
-            this.ShowShortNoticeClosures = true;
             this.ShowPlannedClosures = true;
         }
 
@@ -104,31 +103,10 @@ namespace Escc.ServiceClosures
         public bool ShowEmergencyClosures { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to show closures announced at short notice.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> to show short notice closures; otherwise, <c>false</c>.
-        /// </value>
-        public bool ShowShortNoticeClosures { get; set; }
-
-        /// <summary>
-        /// Gets or sets the number days in advance a closure must be logged, otherwise it is regarded as logged at short notice.
-        /// </summary>
-        /// <value>The number of days.</value>
-        public int ShortNoticeDays { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether to show closures which are planned in advance and are not emergencies.
         /// </summary>
         /// <value><c>true</c> to show planned closures; otherwise, <c>false</c>.</value>
         public bool ShowPlannedClosures { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to show the current status of all services, including those with no data.
-        /// </summary>
-        /// <value><c>true</c> if show all services; otherwise, <c>false</c>.</value>
-        /// <remarks>This property has an effect only if <see cref="TodayOnly"/> is set to <c>true</c></remarks>
-        public bool ShowAllServices { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to group by closure status.
@@ -204,16 +182,6 @@ namespace Escc.ServiceClosures
                 {
                     this.Controls.Add(new LiteralControl("<h2>Confirmed <strong>closed</strong>" + when + "</h2>"));
                     this.Controls.Add(listClosed);
-                }
-
-                HtmlGenericControl listUnknown = new HtmlGenericControl("ol");
-                listUnknown.Attributes["class"] = this.CssClass;
-                AddClosureListItems(listUnknown, ClosureStatus.Unknown);
-                if (listUnknown.Controls.Count > 0)
-                {
-                    if (when.Length > 0) when = " for" + when;
-                    this.Controls.Add(new LiteralControl("<h2>Not yet confirmed" + when + "</h2>"));
-                    this.Controls.Add(listUnknown);
                 }
             }
             else
@@ -325,43 +293,19 @@ namespace Escc.ServiceClosures
                     {
                         foreach (Closure closure in currentClosures)
                         {
-                            // A short notice closure might be for a mundane reason, 
-                            // but it's been announced at the last minute
-                            bool isShortNoticeClosure = (closure.DaysNotice <= ShortNoticeDays);
-
                             // Beacause the list might be grouped by status, only show if the status
                             // matches (otherwise it'll show multiple times - once for each status)
                             if (status == null || status == closure.Status)
                             {
                                 // Only show the closure if the relevant "ShowXXX" property is true
                                 if ((ShowEmergencyClosures && closure.Reason.Emergency) ||
-                                    (ShowShortNoticeClosures && isShortNoticeClosure) ||
-                                    (ShowPlannedClosures && (!closure.Reason.Emergency && !isShortNoticeClosure)))
+                                    (ShowPlannedClosures && !closure.Reason.Emergency))
                                 {
-                                    AddClosureListItem(service, closure, list);
-                                }
-
-                                // But if we're showing all services the rules change: now any kind of closure will do.
-                                // If the service is not closed for a strike because it's already closed for refurbishment,
-                                // residents will still want to know that it's closed.
-                                //
-                                // Setting ShowAllServices=true overrides the values of ShowEmergencyClosures, 
-                                // ShowShortNoticeClosures and ShowPlannedClosures
-                                else if (ShowAllServices)
-                                {
-
                                     AddClosureListItem(service, closure, list);
                                 }
                             }
                         }
                     }
-                    else if (ShowAllServices && (status == null || status == ClosureStatus.Unknown))
-                    {
-                        // If we need to ensure all services are listed regardless, 
-                        // make up a closure to ensure this service is displayed
-                        AddClosureListItem(service, new Closure(), list);
-                    }
-
                 }
                 else
                 {
@@ -387,7 +331,7 @@ namespace Escc.ServiceClosures
         private void AddClosureListItem(Service service, Closure closure, Control container)
         {
             HtmlGenericControl listItem = new HtmlGenericControl("li");
-            if (closure.Status != ClosureStatus.Unknown) listItem.Attributes["class"] = "vevent"; // hCalendar, but only if there's actual data to add to calendar!
+            listItem.Attributes["class"] = "vevent"; // hCalendar, but only if there's actual data to add to calendar!
             container.Controls.Add(listItem);
 
             HtmlGenericControl summary = new HtmlGenericControl("span");
@@ -413,63 +357,56 @@ namespace Escc.ServiceClosures
             }
             serviceElement.Controls.Add(location);
 
-            // Display status unless it's "unknown", in which case just say we don't know
-            if (closure.Status == ClosureStatus.Unknown)
+            // Display status 
+            serviceElement.Controls.Add(new LiteralControl(String.Format(CultureInfo.CurrentCulture, " <span class=\"closed\">{0}</span>, ", Regex.Replace(closure.Status.ToString(), "([A-Z])", " $1").TrimStart().ToLower(CultureInfo.CurrentCulture))));
+            summary.Controls.Add(new LiteralControl(closure.Reason.Reason));
+            listItem.Controls.Add(new LiteralControl(": "));
+
+            if (closure.StartDate == closure.EndDate)
             {
-                serviceElement.Controls.Add(new LiteralControl(" not yet confirmed"));
+                HtmlGenericControl dtstart = new HtmlGenericControl("time");
+                dtstart.Attributes["class"] = "dtstart"; // hCalendar
+                dtstart.Attributes["datetime"] = closure.StartDate.ToIso8601Date();
+                dtstart.InnerText = closure.StartDate.ToBritishDateWithDay();
+                dtstart.InnerText = dtstart.InnerText.Remove(dtstart.InnerText.Length - 4); // Remove the year, because we put that inside a separate tag
+                listItem.Controls.Add(dtstart);
+
+                // Date in datetime attribute here should be one day later. 
+                // For example, if closure is for 15 May, should say 16 May.
+                // It's referring to 00:00 hours at the start of 16 May, meaning the end of 15 May.
+                HtmlGenericControl dtend = new HtmlGenericControl("time");
+                dtend.Attributes["class"] = "dtend"; // hCalendar
+                dtend.Attributes["datetime"] = closure.StartDate.AddDays(1).ToIso8601Date();
+                dtend.InnerText = closure.StartDate.Year.ToString(CultureInfo.CurrentCulture);
+                listItem.Controls.Add(dtend);
             }
             else
             {
-                serviceElement.Controls.Add(new LiteralControl(String.Format(CultureInfo.CurrentCulture, " <span class=\"closed\">{0}</span>, ", Regex.Replace(closure.Status.ToString(), "([A-Z])", " $1").TrimStart().ToLower(CultureInfo.CurrentCulture))));
-                summary.Controls.Add(new LiteralControl(closure.Reason.Reason));
-                listItem.Controls.Add(new LiteralControl(": "));
+                HtmlGenericControl dtstart = new HtmlGenericControl("time");
+                dtstart.Attributes["class"] = "dtstart dtstamp"; // hCalendar. Dtstamp doesn't need to be accurate, just needs to be present for Outlook 2003 to work.
+                dtstart.Attributes["datetime"] = closure.StartDate.ToIso8601Date();
+                dtstart.InnerText = closure.StartDate.ToBritishDateWithDay();
+                listItem.Controls.Add(dtstart);
 
-                if (closure.StartDate == closure.EndDate)
-                {
-                    HtmlGenericControl dtstart = new HtmlGenericControl("time");
-                    dtstart.Attributes["class"] = "dtstart"; // hCalendar
-                    dtstart.Attributes["datetime"] = closure.StartDate.ToIso8601Date();
-                    dtstart.InnerText = closure.StartDate.ToBritishDateWithDay();
-                    dtstart.InnerText = dtstart.InnerText.Remove(dtstart.InnerText.Length - 4); // Remove the year, because we put that inside a separate tag
-                    listItem.Controls.Add(dtstart);
+                listItem.Controls.Add(new LiteralControl(" to "));
 
-                    // Date in datetime attribute here should be one day later. 
-                    // For example, if closure is for 15 May, should say 16 May.
-                    // It's referring to 00:00 hours at the start of 16 May, meaning the end of 15 May.
-                    HtmlGenericControl dtend = new HtmlGenericControl("time");
-                    dtend.Attributes["class"] = "dtend"; // hCalendar
-                    dtend.Attributes["datetime"] = closure.StartDate.AddDays(1).ToIso8601Date();
-                    dtend.InnerText = closure.StartDate.Year.ToString(CultureInfo.CurrentCulture);
-                    listItem.Controls.Add(dtend);
-                }
-                else
-                {
-                    HtmlGenericControl dtstart = new HtmlGenericControl("time");
-                    dtstart.Attributes["class"] = "dtstart dtstamp"; // hCalendar. Dtstamp doesn't need to be accurate, just needs to be present for Outlook 2003 to work.
-                    dtstart.Attributes["datetime"] = closure.StartDate.ToIso8601Date();
-                    dtstart.InnerText = closure.StartDate.ToBritishDateWithDay();
-                    listItem.Controls.Add(dtstart);
-
-                    listItem.Controls.Add(new LiteralControl(" to "));
-
-                    // Date in datetime attribute here should be one day later. 
-                    // For example, if closure is for 15 May, should say 16 May.
-                    // It's referring to 00:00 hours at the start of 16 May, meaning the end of 15 May.
-                    HtmlGenericControl dtend = new HtmlGenericControl("time");
-                    dtend.Attributes["class"] = "dtend"; // hCalendar
-                    dtend.Attributes["datetime"] = closure.EndDate.AddDays(1).ToIso8601Date();
-                    dtend.InnerText = closure.EndDate.ToBritishDateWithDay();
-                    listItem.Controls.Add(dtend);
-                }
-
-                if (!String.IsNullOrEmpty(closure.Notes))
-                {
-                    listItem.Controls.Add(new LiteralControl("<p>" + HttpUtility.HtmlEncode(closure.Notes).Replace(Environment.NewLine + Environment.NewLine, "</p><p>") + "</p>"));
-                }
-
-                // UID is for hCalendar, and particularly for Outlook 2003 which won't import events without it
-                listItem.Controls.Add(new LiteralControl("<span class=\"uid\">http://www.eastsussex.gov.uk/id/" + service.Type.SingularText.ToLowerInvariant() + "/" + service.Code + "/closure/" + closure.Id + "</span>"));
+                // Date in datetime attribute here should be one day later. 
+                // For example, if closure is for 15 May, should say 16 May.
+                // It's referring to 00:00 hours at the start of 16 May, meaning the end of 15 May.
+                HtmlGenericControl dtend = new HtmlGenericControl("time");
+                dtend.Attributes["class"] = "dtend"; // hCalendar
+                dtend.Attributes["datetime"] = closure.EndDate.AddDays(1).ToIso8601Date();
+                dtend.InnerText = closure.EndDate.ToBritishDateWithDay();
+                listItem.Controls.Add(dtend);
             }
+
+            if (!String.IsNullOrEmpty(closure.Notes))
+            {
+                listItem.Controls.Add(new LiteralControl("<p>" + HttpUtility.HtmlEncode(closure.Notes).Replace(Environment.NewLine + Environment.NewLine, "</p><p>") + "</p>"));
+            }
+
+            // UID is for hCalendar, and particularly for Outlook 2003 which won't import events without it
+            listItem.Controls.Add(new LiteralControl("<span class=\"uid\">http://www.eastsussex.gov.uk/id/" + service.Type.SingularText.ToLowerInvariant() + "/" + service.Code + "/closure/" + closure.Id + "</span>"));
 
             itemCount++;
         }

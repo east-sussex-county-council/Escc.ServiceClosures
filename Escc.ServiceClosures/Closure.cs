@@ -10,27 +10,6 @@ namespace Escc.ServiceClosures
     /// </summary>
     public class Closure
     {
-        #region Fields
-
-        private ClosureStatus status = ClosureStatus.Unknown;
-
-        #endregion //Fields
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Closure"/> class.
-        /// </summary>
-        public Closure()
-        {
-            this.Reason = new ClosureReason();
-        }
-
-        #endregion // Constructor
-
-
-        #region Properties
-
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -41,17 +20,7 @@ namespace Escc.ServiceClosures
         /// Gets or sets whether the service is closed.
         /// </summary>
         /// <value>The status.</value>
-        public ClosureStatus Status
-        {
-            get
-            {
-                return this.status;
-            }
-            set
-            {
-                this.status = value;
-            }
-        }
+        public ClosureStatus Status { get; set; }
 
         /// <summary>
         /// Gets or sets the start date.
@@ -70,19 +39,13 @@ namespace Escc.ServiceClosures
         /// </summary>
         /// <value>The reason.</value>
         /// <remarks>Important that this property is not read-only because that would prevent it from being serialised</remarks>
-        public ClosureReason Reason { get; set; }
+        public ClosureReason Reason { get; set; } = new ClosureReason();
 
         /// <summary>
         /// Gets or sets notes about the closure.
         /// </summary>
         /// <value>The notes.</value>
         public string Notes { get; set; }
-
-        /// <summary>
-        /// Gets or sets the the number of days' advance notice given of the closure.
-        /// </summary>
-        /// <value>The number of days' notice.</value>
-        public int DaysNotice { get; set; }
 
         /// <summary>
         /// Gets or sets the date the closure information was added.
@@ -95,24 +58,6 @@ namespace Escc.ServiceClosures
         /// </summary>
         /// <value>The date modified.</value>
         public DateTime DateModified { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether re-confirmation of a multi-day closure is currently required.
-        /// </summary>
-        /// <value><c>true</c> if confirmation required; otherwise, <c>false</c>.</value>
-        public bool ConfirmationRequired { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether re-confirmation of a multi-day closure is currently overdue.
-        /// </summary>
-        /// <value><c>true</c> if confirmation overdue; otherwise, <c>false</c>.</value>
-        public bool ConfirmationOverdue { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date the closure was last confirmed.
-        /// </summary>
-        /// <value>The date confirmed.</value>
-        public DateTime ConfirmedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the linked data URI representing the closure.
@@ -131,7 +76,5 @@ namespace Escc.ServiceClosures
             get { return (this.LinkedDataUri != null) ? this.LinkedDataUri.ToString() : null; }
             set { this.LinkedDataUri = String.IsNullOrEmpty(value) ? null : new Uri(value, UriKind.Absolute); }
         }
-
-        #endregion // Properties
     }
 }

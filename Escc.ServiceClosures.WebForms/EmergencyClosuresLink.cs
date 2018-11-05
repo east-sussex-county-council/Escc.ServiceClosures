@@ -78,7 +78,7 @@ namespace Escc.ServiceClosures
         /// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
-        protected override void OnInit(EventArgs e)
+        protected async override void OnInit(EventArgs e)
         {
             // Run the base Init event to ensure properties are read from ASPX
             base.OnInit(e);
@@ -96,14 +96,14 @@ namespace Escc.ServiceClosures
                 // Otherwise read the relevant XML file
                 try
                 {
-                    closureData = new AzureBlobStorageDataSource(ConfigurationManager.ConnectionStrings["Escc.ServiceClosures.AzureStorage"].ConnectionString, "service-closures").ReadClosureData(new ServiceType(this.ServiceType));
+                    closureData = await new AzureBlobStorageDataSource(ConfigurationManager.ConnectionStrings["Escc.ServiceClosures.AzureStorage"].ConnectionString, "service-closures").ReadClosureDataAsync(new ServiceType(this.ServiceType));
 
                     // Set visibility early, so that it can be picked up by <see cref="EmergencyClosuresLinkContainer"/>
                     // if that is used as the parent control
 
                     this.Visible = (closureData != null
                         && this.NavigateUrl != null
-                        && (TooLateForToday() ? closureData.EmergencyClosureExistsTomorrow() : closureData.EmergencyClosureExistsToday())); // || closureData.ClosedTodayAtShortNotice(Settings.Default.ShortNoticeDays))); // editors didn't want this to appear for short notice closures
+                        && (TooLateForToday() ? closureData.EmergencyClosureExists(DateTime.Today.AddDays(1)) : closureData.EmergencyClosureExists(DateTime.Today)));
 
                     // If not visible, cache that decision represented by String.Empty, because the Render method isn't even going to run
                     // and that's where caching would otherwise take place

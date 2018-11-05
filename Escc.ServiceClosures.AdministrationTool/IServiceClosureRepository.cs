@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Escc.ServiceClosures
+namespace Escc.ServiceClosures.AdministrationTool
 {
     /// <summary>
     /// A repository where service closure data can be stored

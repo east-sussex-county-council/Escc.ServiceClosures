@@ -38,13 +38,5 @@ namespace Escc.ServiceClosures
         /// </summary>
         /// <value><c>true</c> if selectable; otherwise, <c>false</c>.</value>
         public bool Selectable { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="ClosureReason"/> may also affect all similar services.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if reason may affect all services; otherwise, <c>false</c>.
-        /// </value>
-        public bool MayAffectAllServices { get; set; }
     }
 }

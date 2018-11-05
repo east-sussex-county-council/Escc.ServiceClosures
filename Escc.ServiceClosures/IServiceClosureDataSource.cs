@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Escc.ServiceClosures
 {
@@ -15,6 +16,6 @@ namespace Escc.ServiceClosures
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <returns></returns>
-        IServiceClosureData ReadClosureData(ServiceType serviceType);
+        Task<IServiceClosureData> ReadClosureDataAsync(ServiceType serviceType);
     }
 }

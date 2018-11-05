@@ -18,18 +18,11 @@ namespace Escc.ServiceClosures
         /// <summary>
         /// Gets the closures for today for a service identified by its code.
         /// </summary>
+        /// <param name="date">The date.</param>
         /// <param name="code">The code.</param>
         /// <param name="emergencyOnly">if set to <c>true</c> get emergency closures only.</param>
         /// <returns></returns>
-        Collection<Closure> ClosuresTodayByServiceCode(string code, bool emergencyOnly);
-
-        /// <summary>
-        /// Gets the closures for tomorrow for a service identified by its code.
-        /// </summary>
-        /// <param name="code">The code.</param>
-        /// <param name="emergencyOnly">if set to <c>true</c> get emergency closures only.</param>
-        /// <returns></returns>
-        Collection<Closure> ClosuresTomorrowByServiceCode(string code, bool emergencyOnly);
+        Collection<Closure> ClosuresByDateAndServiceCode(DateTime date, string code, bool emergencyOnly);
 
         /// <summary>
         /// Checks whether a emergency closure exists on a specific day.
@@ -37,18 +30,6 @@ namespace Escc.ServiceClosures
         /// <param name="day">The day.</param>
         /// <returns></returns>
         bool EmergencyClosureExists(DateTime day);
-
-        /// <summary>
-        /// Checks whether a emergency closure exists today.
-        /// </summary>
-        /// <returns></returns>
-        bool EmergencyClosureExistsToday();
-
-        /// <summary>
-        /// Checks whether a emergency closure exists tomorrow.
-        /// </summary>
-        /// <returns></returns>
-        bool EmergencyClosureExistsTomorrow();
 
         /// <summary>
         /// Gets all the services for which closure data is available

@@ -1,0 +1,512 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Escc.ServiceClosures</name>
+    </assembly>
+    <members>
+        <member name="T:Escc.ServiceClosures.AzureBlobStorageDataSource">
+            <summary>
+            Reads service closure data from Azure blob storage
+            </summary>
+            <seealso cref="T:Escc.ServiceClosures.IServiceClosureDataSource" />
+        </member>
+        <member name="M:Escc.ServiceClosures.AzureBlobStorageDataSource.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Escc.ServiceClosures.AzureBlobStorageDataSource"/> class.
+            </summary>
+            <param name="connectionString">The connection string.</param>
+            <param name="containerName">Name of the container.</param>
+        </member>
+        <member name="M:Escc.ServiceClosures.AzureBlobStorageDataSource.ReadClosureDataAsync(Escc.ServiceClosures.ServiceType)">
+            <summary>
+            Reads the closure data.
+            </summary>
+            <param name="serviceType">Type of the service.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Escc.ServiceClosures.Closure">
+            <summary>
+            A scheduled closure of a council service
+            </summary>
+        </member>
+        <member name="P:Escc.ServiceClosures.Closure.Id">
+            <summary>
+            Gets or sets the id.
+            </summary>
+            <value>The id.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Closure.Status">
+            <summary>
+            Gets or sets whether the service is closed.
+            </summary>
+            <value>The status.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Closure.StartDate">
+            <summary>
+            Gets or sets the start date.
+            </summary>
+            <value>The start date.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Closure.EndDate">
+            <summary>
+            Gets or sets the end date.
+            </summary>
+            <value>The end date.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Closure.Reason">
+            <summary>
+            Gets or sets the reason for closure.
+            </summary>
+            <value>The reason.</value>
+            <remarks>Important that this property is not read-only because that would prevent it from being serialised</remarks>
+        </member>
+        <member name="P:Escc.ServiceClosures.Closure.Notes">
+            <summary>
+            Gets or sets notes about the closure.
+            </summary>
+            <value>The notes.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Closure.DateAdded">
+            <summary>
+            Gets or sets the date the closure information was added.
+            </summary>
+            <value>The date added.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Closure.DateModified">
+            <summary>
+            Gets or sets the date the closure information was last modified.
+            </summary>
+            <value>The date modified.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Closure.LinkedDataUri">
+            <summary>
+            Gets or sets the linked data URI representing the closure.
+            </summary>
+            <value>The URI.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Closure.LinkedDataUriSerialisable">
+            <summary>
+            Gets or sets the linked data URI representing the closure. Synonym for <seealso cref="P:Escc.ServiceClosures.Closure.LinkedDataUri"/> which is compatible with serialisation.
+            </summary>
+        </member>
+        <member name="T:Escc.ServiceClosures.ClosureReason">
+            <summary>
+            A reason for which a service may be closed
+            </summary>
+        </member>
+        <member name="P:Escc.ServiceClosures.ClosureReason.Id">
+            <summary>
+            Gets or sets the identifier
+            </summary>
+            <value>The identifier</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.ClosureReason.Reason">
+            <summary>
+            Gets or sets the reason.
+            </summary>
+            <value>The reason.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.ClosureReason.Emergency">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:Escc.ServiceClosures.ClosureReason"/> is an emergency closure.
+            </summary>
+            <value><c>true</c> if reason is a type of emergency; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.ClosureReason.RequiresNotes">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:Escc.ServiceClosures.ClosureReason"/> requires the submitter to add further details.
+            </summary>
+            <value><c>true</c> if more details required; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.ClosureReason.Selectable">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:Escc.ServiceClosures.ClosureReason"/> is selectable for new closures.
+            </summary>
+            <value><c>true</c> if selectable; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="T:Escc.ServiceClosures.ClosureStatus">
+            <summary>
+            Indications of whether a service is closed or not
+            </summary>
+        </member>
+        <member name="F:Escc.ServiceClosures.ClosureStatus.Closed">
+            <summary>
+            Confirmation received that the service is closed
+            </summary>
+        </member>
+        <member name="F:Escc.ServiceClosures.ClosureStatus.PartlyClosed">
+            <summary>
+            Confirmation received that the service is partly closed
+            </summary>
+        </member>
+        <member name="T:Escc.ServiceClosures.IServiceClosureData">
+            <summary>
+            Information about service closures
+            </summary>
+        </member>
+        <member name="M:Escc.ServiceClosures.IServiceClosureData.ClosuresByServiceCode(System.String)">
+            <summary>
+            Gets the closures for a service identified by its code.
+            </summary>
+            <param name="code">The code.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Escc.ServiceClosures.IServiceClosureData.ClosuresByDateAndServiceCode(System.DateTime,System.String,System.Boolean)">
+            <summary>
+            Gets the closures for today for a service identified by its code.
+            </summary>
+            <param name="date">The date.</param>
+            <param name="code">The code.</param>
+            <param name="emergencyOnly">if set to <c>true</c> get emergency closures only.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Escc.ServiceClosures.IServiceClosureData.EmergencyClosureExists(System.DateTime)">
+            <summary>
+            Checks whether a emergency closure exists on a specific day.
+            </summary>
+            <param name="day">The day.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Escc.ServiceClosures.IServiceClosureData.Services">
+            <summary>
+            Gets all the services for which closure data is available
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Escc.ServiceClosures.IServiceClosureDataSource">
+            <summary>
+            Reads service closure data from a repository
+            </summary>
+        </member>
+        <member name="M:Escc.ServiceClosures.IServiceClosureDataSource.ReadClosureDataAsync(Escc.ServiceClosures.ServiceType)">
+            <summary>
+            Reads the closure data.
+            </summary>
+            <param name="serviceType">Type of the service.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Escc.ServiceClosures.Service">
+            <summary>
+            A council service which is subject to closures
+            </summary>
+        </member>
+        <member name="M:Escc.ServiceClosures.Service.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Escc.ServiceClosures.Service"/> class.
+            </summary>
+        </member>
+        <member name="P:Escc.ServiceClosures.Service.Id">
+            <summary>
+            Gets or sets the database id of the service.
+            </summary>
+            <value>The id.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Service.Code">
+            <summary>
+            Gets or sets an internal code identifying the service, such as a DfES school code or library branch code.
+            </summary>
+            <value>The code.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Service.Name">
+            <summary>
+            Gets or sets the name of the service.
+            </summary>
+            <value>The name.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Service.LinkedDataUri">
+            <summary>
+            Gets or sets the linked data URI representing the service.
+            </summary>
+            <value>The URI.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Service.LinkedDataUriSerialisable">
+            <summary>
+            Gets or sets the linked data URI representing the service. Synonym for <seealso cref="P:Escc.ServiceClosures.Service.LinkedDataUri"/> which is compatible with serialisation.
+            </summary>
+        </member>
+        <member name="P:Escc.ServiceClosures.Service.Url">
+            <summary>
+            Gets or sets the URL where details of the service can be found.
+            </summary>
+            <value>The URL.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Service.UrlSerialisable">
+            <summary>
+            Gets or sets the URL where details of the service can be found. Synonym for <seealso cref="P:Escc.ServiceClosures.Service.Url"/> which is compatible with serialisation.
+            </summary>
+        </member>
+        <member name="P:Escc.ServiceClosures.Service.Type">
+            <summary>
+            Gets or sets the type of service. Defaults to "service".
+            </summary>
+            <value>The type.</value>
+            <example>school</example>
+            <example>library</example>
+            <remarks>Important that this property is not read-only because that would prevent it from being serialised</remarks>
+        </member>
+        <member name="P:Escc.ServiceClosures.Service.Closures">
+            <summary>
+            Gets the closures currently scheduled for the service.
+            </summary>
+            <value>The closures currently scheduled.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Service.ReasonsForClosure">
+            <summary>
+            Gets the reasons for which the service may be closed.
+            </summary>
+            <value>The reasons for closure.</value>
+        </member>
+        <member name="M:Escc.ServiceClosures.Service.CheckForClosures(System.DateTime)">
+            <summary>
+            Checks whether the service has closure information for a specific day
+            </summary>
+            <returns>Closure information if present</returns>
+        </member>
+        <member name="T:Escc.ServiceClosures.ServiceType">
+            <summary>
+            A type of service which is subject to closures
+            </summary>
+        </member>
+        <member name="M:Escc.ServiceClosures.ServiceType.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Escc.ServiceClosures.ServiceType"/> class.
+            </summary>
+        </member>
+        <member name="M:Escc.ServiceClosures.ServiceType.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Escc.ServiceClosures.ServiceType"/> class.
+            </summary>
+            <param name="singular">A word or phrase which describes a single instance of this service.</param>
+        </member>
+        <member name="M:Escc.ServiceClosures.ServiceType.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Escc.ServiceClosures.ServiceType"/> class.
+            </summary>
+            <param name="singular">A word or phrase which describes a single instance of this service.</param>
+            <param name="plural">A word or phrase which describes multiple instances of this service.</param>
+        </member>
+        <member name="P:Escc.ServiceClosures.ServiceType.SingularText">
+            <summary>
+            Gets or sets the word or phrase which describes a single instance of this service.
+            </summary>
+            <value>The singular text.</value>
+            <example>
+            <list type="bullet">
+            <item>school</item>
+            <item>library</item>
+            <item>household waste site</item>
+            </list>
+            </example>
+        </member>
+        <member name="P:Escc.ServiceClosures.ServiceType.PluralText">
+            <summary>
+            Gets or sets the word or phrase which describes multiple instances of this service.
+            </summary>
+            <value>The plural text.</value>
+            <example>
+            <list type="bullet">
+            <item>schools</item>
+            <item>libraries</item>
+            <item>household waste sites</item>
+            </list>
+            </example>
+        </member>
+        <member name="T:Escc.ServiceClosures.Subscription">
+            <summary>
+            A subscription to closure notifications
+            </summary>
+        </member>
+        <member name="M:Escc.ServiceClosures.Subscription.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Escc.ServiceClosures.Subscription"/> class.
+            </summary>
+        </member>
+        <member name="P:Escc.ServiceClosures.Subscription.Id">
+            <summary>
+            Gets or sets the id of the subscription
+            </summary>
+            <value>The id.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Subscription.Type">
+            <summary>
+            Gets or sets the type of subscription
+            </summary>
+            <value>The type.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Subscription.Address">
+            <summary>
+            Gets or sets the address to send notifications to
+            </summary>
+            <value>The address.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Subscription.Service">
+            <summary>
+            Gets or sets the service being subscribed to
+            </summary>
+            <value>The service, or <c>null</c> if the subscription is for every service of a given type.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Subscription.Code">
+            <summary>
+            Gets or sets the code used to activate or deactivate the subscription
+            </summary>
+            <value>The code.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Subscription.Active">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:Escc.ServiceClosures.Subscription"/> is active.
+            </summary>
+            <value><c>true</c> if active; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Subscription.Global">
+            <summary>
+            Gets a value indicating whether this <see cref="T:Escc.ServiceClosures.Subscription"/> is for all services of a given type.
+            </summary>
+            <value><c>true</c> if for all services of a given type; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Escc.ServiceClosures.Subscription.OfficialNotification">
+            <summary>
+            Gets or sets a value indicating whether communications to the subscriber should include some mark indicating an genuine notification message.
+            </summary>
+            <value><c>true</c> if official notification; otherwise, <c>false</c>.</value>
+            <remarks>For example, a child subscribes to school notifications and gets an email. Next time they want a day off they
+            change the dates in the email and send it to the local radio station. But the radio station gets an "official notification"
+            which is in a slightly different format, so they ignore the fake email.</remarks>
+        </member>
+        <member name="T:Escc.ServiceClosures.SubscriptionManager">
+            <summary>
+            Manage and process subscriptions to closure information for services
+            </summary>
+        </member>
+        <member name="M:Escc.ServiceClosures.SubscriptionManager.SendEmailNotifications(Escc.ServiceClosures.Service,Escc.ServiceClosures.Closure,System.String,System.Collections.ObjectModel.Collection{Escc.ServiceClosures.Subscription},System.Uri)">
+            <summary>
+            Sends notifications to people who have subscribed to emails
+            </summary>
+            <param name="service">The service which is subject to closure.</param>
+            <param name="closure">The closure to notify subscribers about.</param>
+            <param name="closureEmailTemplateFile">The closure email template file.</param>
+            <param name="subscriptions">The subscriptions.</param>
+            <param name="unsubscribeUrl">The unsubscribe URL, including a {0} token for the subscription code.</param>
+        </member>
+        <member name="M:Escc.ServiceClosures.SubscriptionManager.InsertDataIntoTemplate(Escc.ServiceClosures.Service,Escc.ServiceClosures.Closure,System.String)">
+            <summary>
+            Inserts the closure data into the email template.
+            </summary>
+            <param name="service">The service.</param>
+            <param name="closure">The closure.</param>
+            <param name="templateText">The template text.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Escc.ServiceClosures.SubscriptionType">
+            <summary>
+            Media used to subscribe to closure notifications
+            </summary>
+        </member>
+        <member name="F:Escc.ServiceClosures.SubscriptionType.None">
+            <summary>
+            No subscription
+            </summary>
+        </member>
+        <member name="F:Escc.ServiceClosures.SubscriptionType.Email">
+            <summary>
+            Subscription by email
+            </summary>
+        </member>
+        <member name="F:Escc.ServiceClosures.SubscriptionType.TextMessage">
+            <summary>
+            Subscription by SMS text message
+            </summary>
+        </member>
+        <member name="T:Escc.ServiceClosures.XPathClosureData">
+            <summary>
+            Information about service closures read from XML data
+            </summary>
+        </member>
+        <member name="M:Escc.ServiceClosures.XPathClosureData.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Escc.ServiceClosures.XPathClosureData"/> class.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream" /> object that contains the XML data.</param>
+        </member>
+        <member name="M:Escc.ServiceClosures.XPathClosureData.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Escc.ServiceClosures.XPathClosureData"/> class.
+            </summary>
+            <param name="uri">The path of the file that contains the XML data.</param>
+        </member>
+        <member name="P:Escc.ServiceClosures.XPathClosureData.NamespaceManager">
+            <summary>
+            Gets a namespace manager which sets up the namespace with an "ns" prefix
+            </summary>
+        </member>
+        <member name="P:Escc.ServiceClosures.XPathClosureData.XmlNamespace">
+            <summary>
+            Gets the main XML namespace from the XML data
+            </summary>
+        </member>
+        <member name="M:Escc.ServiceClosures.XPathClosureData.SelectNode(System.String)">
+            <summary>
+            Selects a node from the closures XML matching the supplied XPath expression
+            </summary>
+            <param name="xpath">The XPath expression to evaluate</param>
+            <returns></returns>
+        </member>
+        <member name="M:Escc.ServiceClosures.XPathClosureData.SelectNode(System.String,System.Xml.XPath.XPathNavigator)">
+            <summary>
+            Selects a node from the closures XML matching the supplied XPath expression
+            </summary>
+            <param name="xpath">The XPath expression to evaluate</param>
+            <param name="nav">The position in the document to select from</param>
+            <returns></returns>
+        </member>
+        <member name="M:Escc.ServiceClosures.XPathClosureData.SelectNodes(System.String)">
+            <summary>
+            Selects nodes from the closures XML matching the supplied XPath expression
+            </summary>
+            <param name="xpath">The XPath expression to evaluate</param>
+            <returns></returns>
+        </member>
+        <member name="M:Escc.ServiceClosures.XPathClosureData.SelectNodes(System.String,System.Xml.XPath.XPathNavigator)">
+            <summary>
+            Selects nodes from the closures XML matching the supplied XPath expression
+            </summary>
+            <param name="xpath">The XPath expression to evaluate</param>
+            <param name="nav">The position in the document to select from</param>
+            <returns></returns>
+        </member>
+        <member name="M:Escc.ServiceClosures.XPathClosureData.GetXPathForClosuresOnSingleDay(System.DateTime)">
+            <summary>
+            Gets an XPath expression to select closures in effect tomorrow
+            </summary>
+            <value>XPath expression</value>
+        </member>
+        <member name="M:Escc.ServiceClosures.XPathClosureData.EmergencyClosureExists(System.DateTime)">
+            <summary>
+            Checks whether a emergency closure exists on a specific day.
+            </summary>
+            <param name="day">The day.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Escc.ServiceClosures.XPathClosureData.ClosuresByServiceCode(System.String)">
+            <summary>
+            Gets the closures for a service identified by its code.
+            </summary>
+            <param name="code">The code.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Escc.ServiceClosures.XPathClosureData.ClosuresByDateAndServiceCode(System.DateTime,System.String,System.Boolean)">
+            <summary>
+            Gets the closures for a specific day for a service identified by its code.
+            </summary>
+            <param name="day">The day.</param>
+            <param name="code">The code.</param>
+            <param name="emergencyOnly">if set to <c>true</c> get emergency closures only.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Escc.ServiceClosures.XPathClosureData.Services">
+            <summary>
+            Gets all services from the XML
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using Exceptionless;
 using System.Configuration;
 using Escc.Dates;
+using System.Threading.Tasks;
 
 namespace Escc.ServiceClosures
 {
@@ -81,9 +82,9 @@ namespace Escc.ServiceClosures
         /// <summary>
         /// Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
         /// </summary>
-        protected override void CreateChildControls()
+        protected async override void CreateChildControls()
         {
-            CheckForClosures();
+            await CheckForClosures();
 
             // Add header template
             if (HeaderTemplate != null)
@@ -130,12 +131,12 @@ namespace Escc.ServiceClosures
         /// </summary>
         /// <returns>Number of closures found</returns>
         /// <remarks>The control calls this anyway but making it a public method gives the host page control over when in the lifecycle it happens.</remarks>
-        public int CheckForClosures()
+        public async Task<int> CheckForClosures()
         {
             if (closures != null) return closures.Count;
 
             // Read the relevant XML file
-            closureData = new AzureBlobStorageDataSource(ConfigurationManager.ConnectionStrings["Escc.ServiceClosures.AzureStorage"].ConnectionString, "service-closures").ReadClosureData(this.Service.Type);
+            closureData = await new AzureBlobStorageDataSource(ConfigurationManager.ConnectionStrings["Escc.ServiceClosures.AzureStorage"].ConnectionString, "service-closures").ReadClosureDataAsync(this.Service.Type);
             
             if (closureData == null)
             { 
@@ -143,7 +144,7 @@ namespace Escc.ServiceClosures
                 return 0;
             }
 
-            closures = (TooLateForToday()) ? closureData.ClosuresTomorrowByServiceCode(this.Service.Code, true) : closureData.ClosuresTodayByServiceCode(this.Service.Code, true);
+            closures = (TooLateForToday()) ? closureData.ClosuresByDateAndServiceCode(DateTime.Today.AddDays(1), this.Service.Code, true) : closureData.ClosuresByDateAndServiceCode(DateTime.Today, this.Service.Code, true);
             this.Visible = (closures.Count > 0);
             return closures.Count;
         }

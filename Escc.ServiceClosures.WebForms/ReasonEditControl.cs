@@ -23,7 +23,6 @@ namespace Escc.ServiceClosures
         CheckBox emergency = new CheckBox();
         CheckBox requiresNotes = new CheckBox();
         CheckBox selectable = new CheckBox();
-        CheckBox mayAffectAll = new CheckBox();
 
         #endregion
 
@@ -36,7 +35,6 @@ namespace Escc.ServiceClosures
             : base(HtmlTextWriterTag.Div)
         {
             this.SaveButtonText = "Save";
-            this.MayAffectAllText = "May affect all services";
         }
 
         #endregion
@@ -72,12 +70,6 @@ namespace Escc.ServiceClosures
         /// </summary>
         /// <value>The save button text.</value>
         public string SaveButtonText { get; set; }
-
-        /// <summary>
-        /// Gets or sets the "may affect all services" text.
-        /// </summary>
-        /// <value>The "may affect all services" text.</value>
-        public string MayAffectAllText { get; set; }
 
         /// <summary>
         /// Container for header and footer templates
@@ -155,19 +147,6 @@ namespace Escc.ServiceClosures
             selectableContainer.Controls.Add(selectable);
             selectablePart.Controls.Add(selectableContainer);
             this.Controls.Add(selectablePart);
-
-            // May affect all services
-            mayAffectAll.ID = "mayAffectAll";
-            if (!this.Page.IsPostBack && this.Reason != null) mayAffectAll.Checked = this.Reason.MayAffectAllServices;
-            mayAffectAll.Text = this.MayAffectAllText;
-
-            HtmlGenericControl mayAffectAllPart = new HtmlGenericControl("div");
-            mayAffectAllPart.Attributes["class"] = "formPart";
-            HtmlGenericControl mayAffectAllContainer = new HtmlGenericControl("div");
-            mayAffectAllContainer.Attributes["class"] = "formControl noLabel";
-            mayAffectAllContainer.Controls.Add(mayAffectAll);
-            mayAffectAllPart.Controls.Add(mayAffectAllContainer);
-            this.Controls.Add(mayAffectAllPart);
 
             // Add footer template
             if (FooterTemplate != null)
@@ -281,7 +260,6 @@ namespace Escc.ServiceClosures
                 e.Reason.Emergency = emergency.Checked;
                 e.Reason.RequiresNotes = requiresNotes.Checked;
                 e.Reason.Selectable = selectable.Checked;
-                e.Reason.MayAffectAllServices = mayAffectAll.Checked;
 
                 this.ReasonSubmitted(this, e);
             }
