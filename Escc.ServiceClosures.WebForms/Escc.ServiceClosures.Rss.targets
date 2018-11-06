@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Escc_ServiceClosures_Rss Include="$(MSBuildProjectDirectory)\..\packages\Escc.ServiceClosures.Rss.1.0.1\Content\**\*.xslt"/>
+    <Escc_ServiceClosures_Rss Include="$(MSBuildProjectDirectory)\..\packages\Escc.ServiceClosures.Rss.1.0.2\Content\**\*.xslt"/>
   </ItemGroup>
 
   <Target Name="Escc_ServiceClosures_Rss_CopyFiles" BeforeTargets="PrepareForBuild">
