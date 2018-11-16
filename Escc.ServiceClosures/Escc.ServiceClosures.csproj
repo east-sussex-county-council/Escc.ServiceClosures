@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>4.0.0</Version>
+    <Version>5.0.0</Version>
     <Authors>East Sussex County Council</Authors>
     <Company>East Sussex County Council</Company>
     <Description>Core library for managing service closures and notifications about those closures.</Description>
@@ -13,9 +13,9 @@
     <PackageIconUrl>https://www.eastsussex.gov.uk/apple-touch-icon.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/east-sussex-county-council/Escc.ServiceClosures</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>closure, snow, strike, weather</PackageTags>
+    <PackageTags>closure snow strike weather</PackageTags>
     <NeutralLanguage>en-GB</NeutralLanguage>
-    <PackageReleaseNotes>4.0.0 targets .NET Standard and is use with ASP.NET MVC5+. Previous versions were used with ASP.NET WebForms.</PackageReleaseNotes>
+    <PackageReleaseNotes>5.0.0 updates sending subscription emails to use HTML and more fields that can be substituted into the text.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

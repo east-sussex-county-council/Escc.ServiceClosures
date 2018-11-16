@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Xml.XPath;
 using Escc.Dates;
 
@@ -19,10 +20,20 @@ namespace Escc.ServiceClosures
         /// </summary>
         /// <param name="service">The service which is subject to closure.</param>
         /// <param name="closure">The closure to notify subscribers about.</param>
+        /// <param name="reportClosureUrl">The report closure URL.</param>
+        /// <param name="unsubscribeUrl">The unsubscribe URL, including a {0} token for the subscription code.</param>
         /// <param name="closureEmailTemplateFile">The closure email template file.</param>
         /// <param name="subscriptions">The subscriptions.</param>
-        /// <param name="unsubscribeUrl">The unsubscribe URL, including a {0} token for the subscription code.</param>
-        public static void SendEmailNotifications(Service service, Closure closure, string closureEmailTemplateFile, Collection<Subscription> subscriptions, Uri unsubscribeUrl)
+        /// <exception cref="ArgumentNullException">
+        /// service
+        /// or
+        /// closure
+        /// or
+        /// closureEmailTemplateFile
+        /// or
+        /// subscriptions
+        /// </exception>
+        public static void SendEmailNotifications(Service service, Closure closure, Uri reportClosureUrl, Uri unsubscribeUrl, string closureEmailTemplateFile, Collection<Subscription> subscriptions)
         {
             // All parameters are required
             if (service == null) throw new ArgumentNullException("service");
@@ -37,63 +48,77 @@ namespace Escc.ServiceClosures
 
             // Create an email for each subscriber, because it contains a unique unsubscribe link
             // Set subject and body, inserting details of closure
-            MailAddress standardFrom = new MailAddress(templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/From").Value);
-            string standardBcc = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/Bcc").Value;
-            string standardSubject = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/Subject").Value;
-            string standardBody = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/Body").Value;
-            standardSubject = InsertDataIntoTemplate(service, closure, standardSubject);
-            standardBody = InsertDataIntoTemplate(service, closure, standardBody);
+            var standardFrom = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/From")?.Value;
+            var standardBcc = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/Bcc")?.Value;
+            var standardSubject = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/Subject")?.Value;
+            var standardBody = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='false']/Body")?.Value;
+            standardSubject = InsertDataIntoTemplate(service, closure,reportClosureUrl, standardSubject);
+            standardBody = InsertDataIntoTemplate(service, closure, reportClosureUrl, standardBody);
 
-            MailAddress officialFrom = new MailAddress(templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/From").Value);
-            string officialBcc = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/Bcc").Value;
-            string officialSubject = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/Subject").Value;
-            string officialBody = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/Body").Value;
-            officialSubject = InsertDataIntoTemplate(service, closure, officialSubject);
-            officialBody = InsertDataIntoTemplate(service, closure, officialBody);
+            var officialFrom = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/From")?.Value;
+            var officialBcc = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/Bcc")?.Value;
+            var officialSubject = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/Subject")?.Value;
+            var officialBody = templateNavigator.SelectSingleNode("/EmailTemplate/Email[@OfficialNotification='true']/Body")?.Value;
+            officialSubject = InsertDataIntoTemplate(service, closure, reportClosureUrl, officialSubject);
+            officialBody = InsertDataIntoTemplate(service, closure, reportClosureUrl, officialBody);
 
             List<string> addressesAdded = new List<string>();
-            foreach (Subscription sub in subscriptions)
+            using (SmtpClient smtp = new SmtpClient())
             {
-                if (sub.Type == SubscriptionType.Email && !addressesAdded.Contains(sub.Address))
+                foreach (Subscription sub in subscriptions)
                 {
-                    MailMessage email = new MailMessage();
-                    email.From = sub.OfficialNotification ? officialFrom : standardFrom;
-                    email.To.Add(new MailAddress(sub.Address));
-
-                    string addBcc = sub.OfficialNotification ? officialBcc : standardBcc;
-                    // Do we have a blind copy recipient?
-                    if (!string.IsNullOrEmpty(addBcc))
+                    if (sub.Type == SubscriptionType.Email && !addressesAdded.Contains(sub.Address))
                     {
-                        // Yes, then blind copy them in
-                        email.Bcc.Add(new MailAddress(addBcc));
+                        using (MailMessage email = new MailMessage())
+                        {
+                            email.IsBodyHtml = true;
+                            var from = (sub.OfficialNotification ? officialFrom : standardFrom);
+                            if (!String.IsNullOrEmpty(from)) {
+                                email.From = new MailAddress(from);
+                            }
+                            email.To.Add(new MailAddress(sub.Address));
+
+                            string addBcc = sub.OfficialNotification ? officialBcc : standardBcc;
+                            // Do we have a blind copy recipient?
+                            if (!string.IsNullOrEmpty(addBcc))
+                            {
+                                // Yes, then blind copy them in
+                                email.Bcc.Add(new MailAddress(addBcc));
+                            }
+
+                            // Track which ones are done so we don't send two emails to the same address if they happen to
+                            // have a global and a individual service subscription
+                            addressesAdded.Add(sub.Address);
+
+                            email.Subject = sub.OfficialNotification ? officialSubject : standardSubject;
+                            email.Body = sub.OfficialNotification ? officialBody : standardBody;
+
+                            email.Body = InsertPersonalisedDataIntoTemplate(service, sub, unsubscribeUrl, email.Body);
+
+                            // Send the email
+                            smtp.Send(email);
+                        }
                     }
-
-                    // Track which ones are done so we don't send two emails to the same address if they happen to
-                    // have a global and a individual service subscription
-                    addressesAdded.Add(sub.Address);
-
-                    email.Subject = sub.OfficialNotification ? officialSubject : standardSubject;
-                    email.Body = sub.OfficialNotification ? officialBody : standardBody;
-
-                    // Add the personalised unsubscribe link
-                    if (sub.Code != null && sub.Code != new Guid())
-                    {
-                        string individualUrl = String.Format(unsubscribeUrl.ToString(), sub.Code.ToString());
-                        email.Body +=
-                            String.Format("{1}++ Unsubscribe{1}{1}To stop receiving emails like this one, click on the link below{1}" +
-                            "or paste it into your browser's address bar.{1}{1}" +
-                            "{0}{1}{1}", individualUrl, Environment.NewLine);
-
-                    }
-
-                    // All ESCC emails get a standard disclaimer, so add some spacing before it
-                    email.Body += String.Format("{0}{0}++ Disclaimer", Environment.NewLine);
-
-                    // Send the email
-                    SmtpClient smtp = new SmtpClient();
-                    smtp.Send(email);
                 }
             }
+        }
+
+        private static string InsertPersonalisedDataIntoTemplate(Service service, Subscription sub, Uri unsubscribeUrl, string templateText)
+        {
+            if (!String.IsNullOrEmpty(templateText))
+            {
+                // Add the personalised unsubscribe link
+                if (sub.Code != null && sub.Code != new Guid())
+                {
+                    string individualUrl = String.Format(unsubscribeUrl.ToString(), sub.Code.ToString());
+                    templateText = templateText.Replace("{Unsubscribe}", individualUrl);
+                }
+                if (service.Url != null)
+                {
+                    templateText = templateText.Replace("{ServiceUrl}", service.Url.ToString());
+                }
+            }
+            return templateText;
         }
 
         /// <summary>
@@ -101,23 +126,32 @@ namespace Escc.ServiceClosures
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="closure">The closure.</param>
+        /// <param name="reportClosureUrl">The report closure URL.</param>
         /// <param name="templateText">The template text.</param>
         /// <returns></returns>
-        private static string InsertDataIntoTemplate(Service service, Closure closure, string templateText)
+        private static string InsertDataIntoTemplate(Service service, Closure closure, Uri reportClosureUrl, string templateText)
         {
-            string dateText = closure.StartDate.ToBritishDateRangeFromThisDateUntil(closure.EndDate, false, false);
-            string notes = String.IsNullOrEmpty(closure.Notes) ? "None" : closure.Notes;
+            if (!String.IsNullOrEmpty(templateText))
+            {
+                string dateText = closure.StartDate.ToBritishDateRangeFromThisDateUntil(closure.EndDate, false, false);
+                string notes = String.IsNullOrEmpty(closure.Notes) ? "None" : closure.Notes;
+                string status = Regex.Replace(closure.Status.ToString(), "([A-Z])", " $1").TrimStart();
 
-            templateText = templateText.Replace("{Service}", service.Name);
-            templateText = templateText.Replace("{ServiceCode}", service.Code);
-            templateText = templateText.Replace("{Status}", Regex.Replace(closure.Status.ToString(), "([A-Z])", " $1").TrimStart().ToLower(CultureInfo.CurrentCulture));
-            templateText = templateText.Replace("{Date}", dateText);
-            templateText = templateText.Replace("{Reason}", closure.Reason.Reason);
-            templateText = templateText.Replace("{Notes}", notes);
+                templateText = templateText.Replace("{AddedBy}", closure.AddedBy);
+                templateText = templateText.Replace("{Service}", service.Name);
+                templateText = templateText.Replace("{ServiceCode}", service.Code);
+                templateText = templateText.Replace("{Status}", status.Substring(0, 1).ToUpper(CultureInfo.CurrentCulture) + status.Substring(1).ToLower(CultureInfo.CurrentCulture));
+                templateText = templateText.Replace("{Date}", dateText);
+                templateText = templateText.Replace("{Reason}", closure.Reason.Reason);
+                templateText = templateText.Replace("{Notes}", HttpUtility.HtmlEncode(notes).Replace(Environment.NewLine + Environment.NewLine, "<br />"));
+                if (reportClosureUrl != null)
+                {
+                    templateText = templateText.Replace("{ReportClosureUrl}", reportClosureUrl.ToString());
+                }
 
-            // Remove any trailing punctuation from missing info
-            templateText.TrimEnd(' ', ',', ':');
-
+                // Remove any trailing punctuation from missing info
+                templateText.TrimEnd(' ', ',', ':');
+            }
             return templateText;
         }
 

@@ -48,6 +48,11 @@ namespace Escc.ServiceClosures
         public string Notes { get; set; }
 
         /// <summary>
+        /// Gets or sets the username of the person who reported the closure.
+        /// </summary>
+        public string AddedBy { get; set; }
+
+        /// <summary>
         /// Gets or sets the date the closure information was added.
         /// </summary>
         /// <value>The date added.</value>

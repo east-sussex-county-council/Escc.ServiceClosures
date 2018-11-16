@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.ServiceClosures.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.ServiceClosures.AdministrationTool", "Escc.ServiceClosures.AdministrationTool\Escc.ServiceClosures.AdministrationTool.csproj", "{704B1C4D-D568-4482-9311-8A6437B85E73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.ServiceClosures", "Escc.ServiceClosures\Escc.ServiceClosures.csproj", "{12F16E83-CC01-4221-A2CE-2DF6491F4DF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escc.ServiceClosures", "Escc.ServiceClosures\Escc.ServiceClosures.csproj", "{12F16E83-CC01-4221-A2CE-2DF6491F4DF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

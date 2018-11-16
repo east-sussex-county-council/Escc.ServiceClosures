@@ -32,7 +32,6 @@ namespace Escc.ServiceClosures.AdministrationTool
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public ClosureInfo ReadClosureInfo(ServiceType serviceType)
         {
             using (SchoolsInformationService.SchoolsInformationWebService webService = new SchoolsInformationService.SchoolsInformationWebService())

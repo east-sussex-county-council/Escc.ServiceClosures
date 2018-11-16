@@ -66,6 +66,11 @@
             </summary>
             <value>The notes.</value>
         </member>
+        <member name="P:Escc.ServiceClosures.Closure.AddedBy">
+            <summary>
+            Gets or sets the username of the person who reported the closure.
+            </summary>
+        </member>
         <member name="P:Escc.ServiceClosures.Closure.DateAdded">
             <summary>
             Gets or sets the date the closure information was added.
@@ -377,22 +382,33 @@
             Manage and process subscriptions to closure information for services
             </summary>
         </member>
-        <member name="M:Escc.ServiceClosures.SubscriptionManager.SendEmailNotifications(Escc.ServiceClosures.Service,Escc.ServiceClosures.Closure,System.String,System.Collections.ObjectModel.Collection{Escc.ServiceClosures.Subscription},System.Uri)">
+        <member name="M:Escc.ServiceClosures.SubscriptionManager.SendEmailNotifications(Escc.ServiceClosures.Service,Escc.ServiceClosures.Closure,System.Uri,System.Uri,System.String,System.Collections.ObjectModel.Collection{Escc.ServiceClosures.Subscription})">
             <summary>
             Sends notifications to people who have subscribed to emails
             </summary>
             <param name="service">The service which is subject to closure.</param>
             <param name="closure">The closure to notify subscribers about.</param>
+            <param name="reportClosureUrl">The report closure URL.</param>
+            <param name="unsubscribeUrl">The unsubscribe URL, including a {0} token for the subscription code.</param>
             <param name="closureEmailTemplateFile">The closure email template file.</param>
             <param name="subscriptions">The subscriptions.</param>
-            <param name="unsubscribeUrl">The unsubscribe URL, including a {0} token for the subscription code.</param>
+            <exception cref="T:System.ArgumentNullException">
+            service
+            or
+            closure
+            or
+            closureEmailTemplateFile
+            or
+            subscriptions
+            </exception>
         </member>
-        <member name="M:Escc.ServiceClosures.SubscriptionManager.InsertDataIntoTemplate(Escc.ServiceClosures.Service,Escc.ServiceClosures.Closure,System.String)">
+        <member name="M:Escc.ServiceClosures.SubscriptionManager.InsertDataIntoTemplate(Escc.ServiceClosures.Service,Escc.ServiceClosures.Closure,System.Uri,System.String)">
             <summary>
             Inserts the closure data into the email template.
             </summary>
             <param name="service">The service.</param>
             <param name="closure">The closure.</param>
+            <param name="reportClosureUrl">The report closure URL.</param>
             <param name="templateText">The template text.</param>
             <returns></returns>
         </member>
