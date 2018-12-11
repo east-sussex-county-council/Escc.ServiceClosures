@@ -27,38 +27,13 @@ namespace Escc.ServiceClosures.AdministrationTool
 
             try
             {
-                if (args.Length != 2)
-                {
-                    ShowHelp();
-                    return;
-                }
-
-                switch (args[0])
-                {
-                    case "/pulldata":
-                        // Switch statement is just future-proofing, should be more types of service in future    
-                        switch (args[1])
-                        {
-                            case "school":
-                                PullSchoolData();
-                                break;
-
-                            default:
-                                ShowHelp();
-                                break;
-                        }
-                        break;
-
-                    default:
-                        ShowHelp();
-                        return;
-                }
+                PullSchoolData();
             }
             catch (Exception ex)
             {
                 ex.ToExceptionless().Submit();
-
                 log.Error(ex.Message);
+                throw;
             }
         }
 
@@ -81,19 +56,5 @@ namespace Escc.ServiceClosures.AdministrationTool
             log.InfoFormat("School data refreshed using {0}", dataSource.GetType().ToString());
         }
         #endregion
-
-        /// <summary>
-        /// Shows the help.
-        /// </summary>
-        private static void ShowHelp()
-        {
-            Console.WriteLine();
-            Console.WriteLine("Usage:");
-            Console.WriteLine();
-            Console.WriteLine("Escc.ServiceClosures.AdministrationTool /pulldata ServiceType");
-            Console.WriteLine();
-            Console.WriteLine("where ServiceType is one of the following options: school");
-            Console.WriteLine();
-        }
     }
 }
