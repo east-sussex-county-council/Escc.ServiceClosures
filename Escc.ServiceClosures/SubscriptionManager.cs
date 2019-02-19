@@ -36,10 +36,10 @@ namespace Escc.ServiceClosures
         public static void SendEmailNotifications(Service service, Closure closure, Uri reportClosureUrl, Uri unsubscribeUrl, string closureEmailTemplateFile, Collection<Subscription> subscriptions)
         {
             // All parameters are required
-            if (service == null) throw new ArgumentNullException("service");
-            if (closure == null) throw new ArgumentNullException("closure");
-            if (closureEmailTemplateFile == null) throw new ArgumentNullException("closureEmailTemplateFile");
-            if (subscriptions == null) throw new ArgumentNullException("subscriptions");
+            if (service == null) { throw new ArgumentNullException("service"); }
+            if (closure == null) { throw new ArgumentNullException("closure"); }
+            if (closureEmailTemplateFile == null) { throw new ArgumentNullException("closureEmailTemplateFile"); }
+            if (subscriptions == null) { throw new ArgumentNullException("subscriptions"); }
 
             // Get the closure template from the specified file - allow exceptions to be 
             // thrown to calling method which was responsible for specifying this file
@@ -105,20 +105,21 @@ namespace Escc.ServiceClosures
 
         private static string InsertPersonalisedDataIntoTemplate(Service service, Subscription sub, Uri unsubscribeUrl, string templateText)
         {
-            if (!String.IsNullOrEmpty(templateText))
+            var updatedText = templateText;
+            if (!String.IsNullOrEmpty(updatedText))
             {
                 // Add the personalised unsubscribe link
                 if (sub.Code != null && sub.Code != new Guid())
                 {
                     string individualUrl = String.Format(unsubscribeUrl.ToString(), sub.Code.ToString());
-                    templateText = templateText.Replace("{Unsubscribe}", individualUrl);
+                    updatedText = updatedText.Replace("{Unsubscribe}", individualUrl);
                 }
                 if (service.Url != null)
                 {
-                    templateText = templateText.Replace("{ServiceUrl}", service.Url.ToString());
+                    updatedText = updatedText.Replace("{ServiceUrl}", service.Url.ToString());
                 }
             }
-            return templateText;
+            return updatedText;
         }
 
         /// <summary>
@@ -131,28 +132,29 @@ namespace Escc.ServiceClosures
         /// <returns></returns>
         private static string InsertDataIntoTemplate(Service service, Closure closure, Uri reportClosureUrl, string templateText)
         {
-            if (!String.IsNullOrEmpty(templateText))
+            var updatedText = templateText;
+            if (!String.IsNullOrEmpty(updatedText))
             {
                 string dateText = closure.StartDate.ToBritishDateRangeFromThisDateUntil(closure.EndDate, false, false);
                 string notes = String.IsNullOrEmpty(closure.Notes) ? "None" : closure.Notes;
                 string status = Regex.Replace(closure.Status.ToString(), "([A-Z])", " $1").TrimStart();
 
-                templateText = templateText.Replace("{AddedBy}", closure.AddedBy);
-                templateText = templateText.Replace("{Service}", service.Name);
-                templateText = templateText.Replace("{ServiceCode}", service.Code);
-                templateText = templateText.Replace("{Status}", status.Substring(0, 1).ToUpper(CultureInfo.CurrentCulture) + status.Substring(1).ToLower(CultureInfo.CurrentCulture));
-                templateText = templateText.Replace("{Date}", dateText);
-                templateText = templateText.Replace("{Reason}", closure.Reason.Reason);
-                templateText = templateText.Replace("{Notes}", HttpUtility.HtmlEncode(notes).Replace(Environment.NewLine + Environment.NewLine, "<br />"));
+                updatedText = updatedText.Replace("{AddedBy}", closure.AddedBy);
+                updatedText = updatedText.Replace("{Service}", service.Name);
+                updatedText = updatedText.Replace("{ServiceCode}", service.Code);
+                updatedText = updatedText.Replace("{Status}", status.Substring(0, 1).ToUpper(CultureInfo.CurrentCulture) + status.Substring(1).ToLower(CultureInfo.CurrentCulture));
+                updatedText = updatedText.Replace("{Date}", dateText);
+                updatedText = updatedText.Replace("{Reason}", closure.Reason.Reason);
+                updatedText = updatedText.Replace("{Notes}", HttpUtility.HtmlEncode(notes).Replace(Environment.NewLine + Environment.NewLine, "<br />"));
                 if (reportClosureUrl != null)
                 {
-                    templateText = templateText.Replace("{ReportClosureUrl}", reportClosureUrl.ToString());
+                    updatedText = updatedText.Replace("{ReportClosureUrl}", reportClosureUrl.ToString());
                 }
 
                 // Remove any trailing punctuation from missing info
-                templateText.TrimEnd(' ', ',', ':');
+                updatedText = updatedText.TrimEnd(' ', ',', ':');
             }
-            return templateText;
+            return updatedText;
         }
 
     }

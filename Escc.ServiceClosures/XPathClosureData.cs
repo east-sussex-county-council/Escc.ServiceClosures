@@ -71,20 +71,6 @@ namespace Escc.ServiceClosures
         /// Selects a node from the closures XML matching the supplied XPath expression
         /// </summary>
         /// <param name="xpath">The XPath expression to evaluate</param>
-        /// <returns></returns>
-        private XPathNavigator SelectNode(string xpath)
-        {
-            XPathNavigator nav = this.CreateNavigator();
-            nav.MoveToRoot();
-            nav.MoveToFirstChild();
-
-            return this.SelectNode(xpath, nav);
-        }
-
-        /// <summary>
-        /// Selects a node from the closures XML matching the supplied XPath expression
-        /// </summary>
-        /// <param name="xpath">The XPath expression to evaluate</param>
         /// <param name="nav">The position in the document to select from</param>
         /// <returns></returns>
         private XPathNavigator SelectNode(string xpath, XPathNavigator nav)
@@ -125,7 +111,7 @@ namespace Escc.ServiceClosures
         /// Gets an XPath expression to select closures in effect tomorrow
         /// </summary>
         /// <value>XPath expression</value>
-        private string GetXPathForClosuresOnSingleDay(DateTime day)
+        private static string GetXPathForClosuresOnSingleDay(DateTime day)
         {
             // Need to compare closure dates to date as a number, 
             // because .NET only does XPath 1.0 which doesn't understand dates
@@ -168,7 +154,7 @@ namespace Escc.ServiceClosures
                 xmlReader.Close();
                 return service.Closures;
             }
-            else return new Collection<Closure>();
+            else { return new Collection<Closure>(); }
         }
 
         /// <summary>
@@ -180,7 +166,7 @@ namespace Escc.ServiceClosures
         /// <returns></returns>
         public Collection<Closure> ClosuresByDateAndServiceCode(DateTime day, string code, bool emergencyOnly)
         {
-            if (String.IsNullOrEmpty(code)) return new Collection<Closure>();
+            if (String.IsNullOrEmpty(code)) { return new Collection<Closure>(); }
 
             // Need to compare closure dates to today's date as a number, 
             // because .NET only does XPath 1.0 which doesn't understand dates
@@ -188,7 +174,7 @@ namespace Escc.ServiceClosures
 
             // Concatenate the year, month and date parts of the closure date and compare to "today" variable
             string xpath = String.Format(CultureInfo.InvariantCulture, "/ns:ClosureInfo/ns:Services/ns:Service[ns:Code='{0}']/ns:Closures/ns:Closure[number(concat(substring(ns:StartDate,1,4), substring(ns:StartDate,6,2), substring(ns:StartDate,9,2)))<={1} and number(concat(substring(ns:EndDate,1,4), substring(ns:EndDate,6,2), substring(ns:EndDate,9,2)))>={1}", code, closureDay);
-            if (emergencyOnly) xpath += " and ns:Reason/ns:Emergency = 'true'";
+            if (emergencyOnly) { xpath += " and ns:Reason/ns:Emergency = 'true'"; }
             xpath += "]";
 
             Collection<Closure> closures = new Collection<Closure>();

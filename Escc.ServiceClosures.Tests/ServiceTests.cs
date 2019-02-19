@@ -7,12 +7,12 @@ namespace Escc.ServiceClosures.Tests
     public class ServiceTests
     {
         [Test]
-        public void ClosuresTodayReturnsOneResult()
+        public static void ClosuresTodayReturnsOneResult()
         {
             var service = new Service();
-            service.Closures.Add(new Closure() { StartDate = DateTime.Today.AddDays(-1), EndDate = DateTime.Today.AddDays(-1), Status = ClosureStatus.Closed });
-            service.Closures.Add(new Closure() { StartDate = DateTime.Today, EndDate = DateTime.Today, Status = ClosureStatus.Closed });
-            service.Closures.Add(new Closure() { StartDate = DateTime.Today.AddDays(1), EndDate = DateTime.Today.AddDays(1), Status = ClosureStatus.Closed });
+            service.Closures.Add(new Closure { StartDate = DateTime.Today.AddDays(-1), EndDate = DateTime.Today.AddDays(-1), Status = ClosureStatus.Closed });
+            service.Closures.Add(new Closure { StartDate = DateTime.Today, EndDate = DateTime.Today, Status = ClosureStatus.Closed });
+            service.Closures.Add(new Closure { StartDate = DateTime.Today.AddDays(1), EndDate = DateTime.Today.AddDays(1), Status = ClosureStatus.Closed });
 
             var closures = service.CheckForClosures(DateTime.Today);
 

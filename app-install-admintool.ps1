@@ -28,11 +28,11 @@ $parentFolderOfThisScript = $pathOfThisScript | Split-Path -Parent
 $scriptsProject = 'Escc.WebApplicationSetupScripts'
 $functionsPath = "$pathOfThisScript\..\$scriptsProject\functions.ps1"
 if (Test-Path $functionsPath) {
-  Write-Host "Checking $scriptsProject is up-to-date"
+  Write-Output "Checking $scriptsProject is up-to-date"
   Push-Location "$pathOfThisScript\..\$scriptsProject"
   git pull origin master
   Pop-Location
-  Write-Host
+  Write-Output
   .$functionsPath
 } else {
   if ($env:GIT_ORIGIN_URL) {
@@ -71,7 +71,7 @@ BackupApplication "$destinationFolder/$projectName" $backupFolder $comment
 $debugExists = Test-Path "$appSourceFolder/bin/Debug/$projectName.exe"
 $releaseExists = Test-Path "$appSourceFolder/bin/Release/$projectName.exe"
 if (!$debugExists -and !$releaseExists) {
-	Write-Host "$projectName.exe file not found. Build the project and try again."
+	Write-Output "$projectName.exe file not found. Build the project and try again."
 	Exit
 } elseif ($debugExists -and !$releaseExists) {
 	$buildFolder = "Debug"
@@ -96,5 +96,5 @@ if (Test-Path "$transformsFolder\$projectName\app.config.$websiteName.xdt") {
 	del "$destinationFolder\$projectName\$projectName.exe.temp.config"
 }
 
-Write-Host
-Write-Host "Done. The administration tool needs to be configured as a scheduled task, if you have not already done so." -ForegroundColor "Green"
+Write-Output
+Write-Output "Done. The administration tool needs to be configured as a scheduled task, if you have not already done so." -ForegroundColor "Green"

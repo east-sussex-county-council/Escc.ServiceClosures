@@ -459,13 +459,6 @@
             Gets the main XML namespace from the XML data
             </summary>
         </member>
-        <member name="M:Escc.ServiceClosures.XPathClosureData.SelectNode(System.String)">
-            <summary>
-            Selects a node from the closures XML matching the supplied XPath expression
-            </summary>
-            <param name="xpath">The XPath expression to evaluate</param>
-            <returns></returns>
-        </member>
         <member name="M:Escc.ServiceClosures.XPathClosureData.SelectNode(System.String,System.Xml.XPath.XPathNavigator)">
             <summary>
             Selects a node from the closures XML matching the supplied XPath expression

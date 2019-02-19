@@ -53,7 +53,7 @@ namespace Escc.ServiceClosures
             catch (StorageException ex)
             {
                 var realException = ex.InnerException as System.Net.WebException;
-                if (realException == null) throw;
+                if (realException == null) { throw; }
 
                 // Report the error and return a response with no data
                 new TelemetryClient().TrackException(ex);

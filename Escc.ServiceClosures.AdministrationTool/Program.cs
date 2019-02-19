@@ -11,9 +11,8 @@ namespace Escc.ServiceClosures.AdministrationTool
     /// <summary>
     /// Admin tool to manage service closures
     /// </summary>
-    class Program
+    static class Program
     {
-        private static Collection<Service> closedServices = null;
         private static readonly ILog log = LogManager.GetLogger(typeof(Program));
 
         /// <summary>
