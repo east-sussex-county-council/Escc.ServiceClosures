@@ -1,0 +1,50 @@
+﻿@using System.Globalization
+@using System.Text.RegularExpressions
+@using Escc.Dates
+@using Escc.ServiceClosures
+@model Escc.ServiceClosures.Service
+@functions{
+    /// <summary>
+    /// Adds controls listing a closure.
+    /// </summary>
+    /// <param name="closure">The closure.</param>
+    /// <param name="container">The container.</param>
+    private IHtmlString AddClosure(Service service, Closure closure)
+    {
+        string day = (TooLateForToday()) ? "tomorrow" : "today";
+        var html = String.Format(CultureInfo.InvariantCulture, "{0} is {1} {2}, {3}", service.Name, Regex.Replace(closure.Status.ToString(), "([A-Z])", " $1").TrimStart().ToLower(CultureInfo.CurrentCulture), day, closure.Reason.Reason);
+        if (!String.IsNullOrEmpty(closure.Notes))
+        {
+            html += "<p>" + HttpUtility.HtmlEncode(closure.Notes).Replace(Environment.NewLine + Environment.NewLine, "</p><p>") + "</p>";
+        }
+        return new HtmlString(html);
+    }
+
+
+    /// <summary>
+    /// Gets whether to check for emergency closures today or tomorrow, depending on time of day
+    /// </summary>
+    /// <returns></returns>
+    private bool TooLateForToday()
+    {
+        return (DateTime.Now.ToUkDateTime() > DateTime.Today.Date.AddHours(15).AddMinutes(30)); // change display after 3.30pm
+    }
+}
+@{
+    // Add closure info
+    if (Model.Closures.Count == 1)
+    {
+        // Create a paragraph
+       @AddClosure(Model, Model.Closures[0]);
+    }
+    else
+    {
+        // Create a list
+<ol class="closureList">
+    @foreach (Closure closure in Model.Closures)
+    {
+    <li>@AddClosure(Model, closure)</li>
+    }
+</ol>
+    }
+}

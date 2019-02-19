@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Escc_ServiceClosures_Mvc_Views Include="$(MSBuildProjectDirectory)\..\packages\Escc.ServiceClosures.Mvc.1.0.0\Content\Views\**\*.*"/>
+  </ItemGroup>
+
+  <Target Name="Escc_ServiceClosures_Mvc_CopyFiles" BeforeTargets="PrepareForBuild">
+    <Message Text="Copying Escc.ServiceClosures.Mvc files to project" />
+    <Copy
+        SourceFiles="@(Escc_ServiceClosures_Mvc_Views)"
+        DestinationFiles="@(Escc_ServiceClosures_Mvc_Views->'.\Views\%(RecursiveDir)%(Filename)%(Extension)')"
+        />
+  </Target>
+</Project>

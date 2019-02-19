@@ -1,0 +1,60 @@
+﻿@using Escc.ServiceClosures
+@using System.Globalization
+@using System.Text.RegularExpressions
+@using Escc.Dates
+@model Service
+@foreach (Closure closure in Model.Closures)
+{
+    @* "vevents", "summary", "location", "dtstart", "dtend" are hCalendar classes
+        "service" is in case we need to hide the location and its punctuation together *@
+    <li class="vevent">
+        <div class="summary">
+            <div class="service">
+                <p class="location">
+                    @if (Model.Url == null)
+                    {
+                        @Model.Name;
+                    }
+                    else
+                    {
+                        <a href="@Model.Url">@Model.Name</a>
+                    }
+                </p>
+                <p class="closed"><span class="status">@Regex.Replace(closure.Status.ToString(), "([A-Z])", " $1").TrimStart(): </span>
+                @if (closure.StartDate == closure.EndDate)
+                {
+                    var dateWithoutYear = closure.StartDate.ToBritishDateWithDay();
+                    dateWithoutYear = dateWithoutYear.Remove(dateWithoutYear.Length - 4); // Remove the year, because we put that inside a separate tag
+                    <time class="dtstart" datetime="@closure.StartDate.ToIso8601Date()">@dateWithoutYear</time>
+
+                    // Date in datetime attribute here should be one day later.
+                    // For example, if closure is for 15 May, should say 16 May.
+                    // It's referring to 00:00 hours at the start of 16 May, meaning the end of 15 May.
+                    <time class="dtend" datetime="@closure.StartDate.AddDays(1).ToIso8601Date()">@closure.StartDate.Year.ToString(CultureInfo.CurrentCulture)</time>
+                }
+                else
+                {
+                    @*hCalendar. Dtstamp doesn't need to be accurate, just needs to be present for Outlook 2003 to work. *@
+                    <time class="dtstart dtstamp" datetime="@closure.StartDate.ToIso8601Date()">@closure.StartDate.ToBritishDateWithDay()</time>
+            
+                    @:to 
+            
+                    // Date in datetime attribute here should be one day later.
+                    // For example, if closure is for 15 May, should say 16 May.
+                    // It's referring to 00:00 hours at the start of 16 May, meaning the end of 15 May.
+                    <time class="dtend" datetime="@closure.EndDate.AddDays(1).ToIso8601Date()">@closure.EndDate.ToBritishDateWithDay()</time>
+                }
+                </p>
+            </div>
+            <p class="reason"><span class="label">Reason: </span>@closure.Reason.Reason</p>
+        </div>
+
+        @if (!String.IsNullOrEmpty(closure.Notes))
+        {
+            <p>@Html.Raw(HttpUtility.HtmlEncode(closure.Notes).Replace(Environment.NewLine + Environment.NewLine, "</p><p>"))</p>
+        }
+
+        @* UID is for hCalendar, and particularly for Outlook 2003 which won't import events without it *@
+        <span class="uid">https://www.eastsussex.gov.uk/id/@Model.Type.SingularText.ToLowerInvariant()/@Model.Code/closure/@closure.Id</span>
+    </li>
+}
