@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Escc.ServiceClosures.AdministrationTool</RootNamespace>
     <AssemblyName>Escc.ServiceClosures.AdministrationTool</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>false</SignAssembly>
     <IsWebBootstrapper>true</IsWebBootstrapper>
@@ -147,6 +147,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="netstandard" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzureBlobStorageRepository.cs" />
