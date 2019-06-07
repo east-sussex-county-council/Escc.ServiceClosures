@@ -5,6 +5,7 @@ using Exceptionless;
 using log4net;
 using log4net.Config;
 using System.Configuration;
+using Escc.Net.Configuration;
 
 namespace Escc.ServiceClosures.AdministrationTool
 {
