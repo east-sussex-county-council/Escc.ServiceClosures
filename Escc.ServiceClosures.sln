@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9C71E8C2-BF24-4598-AF18-A9B1AF3FC7A0}"
 	ProjectSection(SolutionItems) = preProject
@@ -19,6 +19,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escc.ServiceClosures", "Escc.ServiceClosures\Escc.ServiceClosures.csproj", "{12F16E83-CC01-4221-A2CE-2DF6491F4DF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.ServiceClosures.Mvc", "Escc.ServiceClosures.Mvc\Escc.ServiceClosures.Mvc.csproj", "{FE7AEB20-7C3E-4870-876D-DDA19C55593A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.ServiceClosures.Rss", "Escc.ServiceClosures.Rss\Escc.ServiceClosures.Rss.csproj", "{E57557BB-C392-4779-A997-A19D22039B34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,10 @@ Global
 		{FE7AEB20-7C3E-4870-876D-DDA19C55593A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE7AEB20-7C3E-4870-876D-DDA19C55593A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE7AEB20-7C3E-4870-876D-DDA19C55593A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E57557BB-C392-4779-A997-A19D22039B34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E57557BB-C392-4779-A997-A19D22039B34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E57557BB-C392-4779-A997-A19D22039B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E57557BB-C392-4779-A997-A19D22039B34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
